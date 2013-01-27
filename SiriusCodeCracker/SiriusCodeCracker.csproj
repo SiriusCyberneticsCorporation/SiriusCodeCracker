@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SCC.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,14 +63,25 @@
     <Compile Include="GridDisplayUserControl.Designer.cs">
       <DependentUpon>GridDisplayUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyBoardUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyBoardUserControl.Designer.cs">
+      <DependentUpon>KeyBoardUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="ScrabbleWords.cs" />
     <Compile Include="Words.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GridDisplayUserControl.resx">
       <DependentUpon>GridDisplayUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyBoardUserControl.resx">
+      <DependentUpon>KeyBoardUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -87,6 +101,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SCC.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

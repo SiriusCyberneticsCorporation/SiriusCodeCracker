@@ -28,13 +28,15 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.button1 = new System.Windows.Forms.Button();
 			this.ColumnsNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.RowsNumericUpDown = new System.Windows.Forms.NumericUpDown();
-			this.CrosswordGrid = new SiriusCodeCracker.GridDisplayUserControl();
 			this.button2 = new System.Windows.Forms.Button();
+			this.keyBoardUserControl1 = new SiriusCodeCracker.KeyBoardUserControl();
+			this.CrosswordGrid = new SiriusCodeCracker.GridDisplayUserControl();
 			((System.ComponentModel.ISupportInitialize)(this.ColumnsNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.RowsNumericUpDown)).BeginInit();
 			this.SuspendLayout();
@@ -118,19 +120,6 @@
             0});
 			this.RowsNumericUpDown.ValueChanged += new System.EventHandler(this.NumericUpDown_ValueChanged);
 			// 
-			// CrosswordGrid
-			// 
-			this.CrosswordGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.CrosswordGrid.BackColor = System.Drawing.Color.White;
-			this.CrosswordGrid.Location = new System.Drawing.Point(12, 63);
-			this.CrosswordGrid.Name = "CrosswordGrid";
-			this.CrosswordGrid.NumberOfColumns = 13;
-			this.CrosswordGrid.NumberOfRows = 13;
-			this.CrosswordGrid.Size = new System.Drawing.Size(567, 480);
-			this.CrosswordGrid.TabIndex = 0;
-			// 
 			// button2
 			// 
 			this.button2.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -142,11 +131,35 @@
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
+			// keyBoardUserControl1
+			// 
+			this.keyBoardUserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.keyBoardUserControl1.BackColor = System.Drawing.Color.Transparent;
+			this.keyBoardUserControl1.Location = new System.Drawing.Point(12, 504);
+			this.keyBoardUserControl1.Name = "keyBoardUserControl1";
+			this.keyBoardUserControl1.Size = new System.Drawing.Size(567, 106);
+			this.keyBoardUserControl1.TabIndex = 7;
+			// 
+			// CrosswordGrid
+			// 
+			this.CrosswordGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.CrosswordGrid.BackColor = System.Drawing.Color.White;
+			this.CrosswordGrid.Location = new System.Drawing.Point(12, 63);
+			this.CrosswordGrid.Name = "CrosswordGrid";
+			this.CrosswordGrid.NumberOfColumns = 13;
+			this.CrosswordGrid.NumberOfRows = 13;
+			this.CrosswordGrid.Size = new System.Drawing.Size(567, 435);
+			this.CrosswordGrid.TabIndex = 0;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(591, 555);
+			this.ClientSize = new System.Drawing.Size(591, 622);
+			this.Controls.Add(this.keyBoardUserControl1);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.RowsNumericUpDown);
@@ -154,6 +167,7 @@
 			this.Controls.Add(this.ColumnsNumericUpDown);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.CrosswordGrid);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Form1";
@@ -173,6 +187,7 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.NumericUpDown RowsNumericUpDown;
 		private System.Windows.Forms.Button button2;
+		private KeyBoardUserControl keyBoardUserControl1;
 	}
 }
 

@@ -24,11 +24,6 @@ namespace SiriusCodeCracker
 			InitializeComponent();
 		}
 
-		private void DrawGrid()
-		{
-
-		}
-
 		private void GridDisplayUserControl_Paint(object sender, PaintEventArgs e)
 		{
 			float columnWidth = (float)this.Width / (float)m_numberOfColumns;
@@ -43,7 +38,7 @@ namespace SiriusCodeCracker
 			PointF bottomLeft = new PointF(left, bottom);
 			PointF bottomRight = new PointF(right, bottom);
 
-			Font letterFont = FindBestFitFont(e.Graphics, "W", 
+			Font letterFont = Tools.FindBestFitFont(e.Graphics, "W", 
 												new System.Drawing.Font(FontFamily.GenericSansSerif, rowHeight, FontStyle.Bold), 
 												new SizeF(columnWidth, rowHeight));
 
@@ -81,7 +76,6 @@ namespace SiriusCodeCracker
 						RectangleF cell = new RectangleF(columnWidth * column, rowHeight * row, columnWidth, rowHeight);
 
 						if (m_theGrid[column, row] < Definitions.FIRST_LETTER)
-						//if (m_theGrid[column, row] == Definitions.UNUSABLE /*|| m_theGrid[column, row] == Definitions.EMPTY*/)
 						{
 							e.Graphics.FillRectangle(Brushes.Black, cell);
 						}
@@ -93,42 +87,6 @@ namespace SiriusCodeCracker
 						}
 					}
 				}
-			}
-		}
-
-		/*
-		private void DrawLetter(Graphics g, RectangleF cell , char letter)
-		{
-			float emSize = cell.Height;
-
-			Font font = new Font(FontFamily.GenericSansSerif, emSize, FontStyle.Regular);
-
-			font = FindBestFitFont(g, letter.ToString(), font, this.ClientRectangle.Size);
-
-			SizeF size = g.MeasureString(letter.ToString(), font);
-
-			g.DrawString(letter.ToString(), font, new SolidBrush(Color.Black), cell);
-
-		}
-		*/
-		private Font FindBestFitFont(Graphics g, String text, Font font, SizeF proposedSize)
-		{
-			// Compute actual size, shrink if needed
-			while (true)
-			{
-				SizeF size = g.MeasureString(text, font);
-
-				// It fits, back out
-				if (size.Height <= proposedSize.Height &&
-					 size.Width <= proposedSize.Width) 
-				{ 
-					return font; 
-				}
-
-				// Try a smaller font (90% of old size)
-				Font oldFont = font;
-				font = new Font(font.Name, (float)(font.Size * .9), font.Style);
-				oldFont.Dispose();
 			}
 		}
 

@@ -34,7 +34,6 @@ namespace SiriusCodeCracker
 		
 		Dictionary<int, List<Crosswords>> m_wordsByLength = new Dictionary<int, List<Crosswords>>();
 		Dictionary<int, List<Crosswords>>[,] m_characterPositions = new Dictionary<int, List<Crosswords>>[20, 26];
-		List<Crosswords> m_usedWords = new List<Crosswords>();
 
 		public CrosswordGenerator()
 		{
@@ -43,6 +42,10 @@ namespace SiriusCodeCracker
 				int length = word.Length;
 				Crosswords wordToAdd = new Crosswords(word, length);
 
+				if (length < 3 || length > 14)
+				{
+					int x = 0;
+				}
 				if (length < m_shortestWord)
 				{
 					m_shortestWord = length;
@@ -143,7 +146,7 @@ namespace SiriusCodeCracker
 			int startRow = 0;
 			int startColumn = 0;
 			bool horizontal = true;
-
+			/*
 			// Start off with 5 in the top left quadrant to improve coverage.
 			int wordsToPlace = 5;
 			while (wordsToPlace > 0)
@@ -171,6 +174,10 @@ namespace SiriusCodeCracker
 					wordsToPlace--;
 				}
 			}
+			*/
+
+			int charactersPlaced = 0;
+			int preferredLength = 0;
 
 			// Now go through twice working all cells horizontally and then vertically
 			// in an attempt to fill up some of the gaps.
@@ -179,18 +186,50 @@ namespace SiriusCodeCracker
 				horizontal = true;
 				for (startRow = 0; startRow < m_numberOfRows; startRow++)
 				{
-					for (startColumn = 0; startColumn < m_numberOfColumns - m_shortestWord; startColumn++)
+					for (startColumn = 0; startColumn < m_numberOfColumns - m_shortestWord; )
 					{
-						PlaceWord(startRow, startColumn, horizontal);
+						if (iterations == 0)
+						{
+							preferredLength = m_randomiser.Next(m_shortestWord, m_longestWord);
+						}
+						else
+						{
+							preferredLength = 0;
+						}
+						
+						PlaceWord(startRow, startColumn, horizontal, out charactersPlaced, preferredLength);
+						
+						if(charactersPlaced > 0)
+						{
+							startColumn += charactersPlaced;
+						}
+
+						startColumn++;
 					}
 				}
 
 				horizontal = false;
-				for (startRow = 0; startRow < m_numberOfRows - m_shortestWord; startRow++)
+				for (startColumn = 0; startColumn < m_numberOfColumns; startColumn++)
 				{
-					for (startColumn = 0; startColumn < m_numberOfColumns; startColumn++)
+					for (startRow = 0; startRow < m_numberOfRows - m_shortestWord; ) 
 					{
-						PlaceWord(startRow, startColumn, horizontal);
+						if (iterations == 0)
+						{
+							preferredLength = m_randomiser.Next(m_shortestWord, m_longestWord);
+						}
+						else
+						{
+							preferredLength = 0;
+						}
+						
+						PlaceWord(startRow, startColumn, horizontal, out charactersPlaced, preferredLength);
+
+						if (charactersPlaced > 0)
+						{
+							startRow += charactersPlaced;
+						}
+
+						startRow++;
 					}
 				}
 			}
@@ -198,7 +237,6 @@ namespace SiriusCodeCracker
 
 		private void InitialiseGrid()
 		{
-			m_usedWords.Clear();
 			for (int column = 0; column < m_numberOfColumns; column++)
 			{
 				for (int row = 0; row < m_numberOfRows; row++)
@@ -245,10 +283,18 @@ namespace SiriusCodeCracker
 
 		private bool PlaceWord(int startRow, int startColumn, bool horizontal)
 		{
+			int charactersPlaced = 0;
+			return PlaceWord(startRow, startColumn, horizontal, out charactersPlaced);
+		}
+
+		private bool PlaceWord(int startRow, int startColumn, bool horizontal, out int charactersPlaced, int preferredLength = 0)
+		{
 			int maximumWordLength = 0;
 			bool result = false;
 			List<KeyValuePair<int, int>> existingLetters = new List<KeyValuePair<int, int>>();
 			Crosswords word = null;
+
+			charactersPlaced = 0;
 
 			if (horizontal)
 			{
@@ -496,7 +542,14 @@ namespace SiriusCodeCracker
 					}
 					if (word == null && wordLength > m_shortestWord)
 					{
-						word = SelectWord(m_wordsByLength, maximumWordLength, startColumn, startRow, horizontal);
+						if (preferredLength > 0 && preferredLength < maximumWordLength)
+						{
+							word = SelectWord(wordList, preferredLength, startColumn, startRow, horizontal);
+						}
+						else
+						{
+							word = SelectWord(wordList, maximumWordLength, startColumn, startRow, horizontal);
+						}
 					}
 				}
 				else if (listOfLists.Count > 0)
@@ -506,12 +559,23 @@ namespace SiriusCodeCracker
 			}
 			else
 			{
-				word = SelectWord(m_wordsByLength, maximumWordLength, startColumn, startRow, horizontal);
+				if (preferredLength > 0 && preferredLength < maximumWordLength)
+				{
+					word = SelectWord(m_wordsByLength, preferredLength, startColumn, startRow, horizontal);
+				}
+				else
+				{
+					word = SelectWord(m_wordsByLength, maximumWordLength, startColumn, startRow, horizontal);
+				}
 			}
 
 			if (word != null)
 			{
-				result = AddWordToGrid(word, startColumn, startRow, horizontal);
+				if (AddWordToGrid(word, startColumn, startRow, horizontal))
+				{
+					charactersPlaced = word.m_length;
+					result = true;
+				}
 			}
 
 			return result;
@@ -630,8 +694,6 @@ namespace SiriusCodeCracker
 				}
 			}
 
-			m_usedWords.Add(word);
-
 			word.m_x = column;
 			word.m_y = row;
 			word.m_horizontal = horizontal;
@@ -662,10 +724,6 @@ namespace SiriusCodeCracker
 						{
 							m_theGrid[column + letter, row - 1] = Definitions.HORIZONTAL_BESIDE;
 						}
-						else if (m_theGrid[column + letter, row - 1] < Definitions.FIRST_LETTER)
-						{
-							//m_theGrid[column + letter, row - 1] = Definitions.UNUSABLE;
-						}
 					}
 					if (row+1 < m_numberOfRows)
 					{
@@ -673,35 +731,7 @@ namespace SiriusCodeCracker
 						{
 							m_theGrid[column + letter, row + 1] = Definitions.HORIZONTAL_BESIDE;
 						}
-						else if (m_theGrid[column + letter, row + 1] < Definitions.FIRST_LETTER)
-						{
-							//m_theGrid[column + letter, row + 1] = Definitions.UNUSABLE;
-						}
 					}
-					/*
-					if (row > 0 && m_theGrid[column + letter, row - 1] >= Definitions.FIRST_LETTER)
-					{
-						if (column + letter > 0)
-						{
-							m_theGrid[column + letter - 1, row - 1] = Definitions.UNUSABLE;
-						}
-						if (column + letter + 1 < m_numberOfColumns)
-						{
-							m_theGrid[column + letter + 1, row - 1] = Definitions.UNUSABLE;
-						}
-					}
-					if (row+1 < m_numberOfRows && m_theGrid[column + letter, row + 1] >= Definitions.FIRST_LETTER)
-					{
-						if (column + letter > 0)
-						{
-							m_theGrid[column + letter - 1, row + 1] = Definitions.UNUSABLE;
-						}
-						if (column + letter + 1 < m_numberOfColumns)
-						{
-							m_theGrid[column + letter + 1, row + 1] = Definitions.UNUSABLE;
-						}
-					}
-					*/
 				}
 			}
 			else
@@ -729,10 +759,6 @@ namespace SiriusCodeCracker
 						{
 							m_theGrid[column - 1, row + letter] = Definitions.VERTICAL_BESIDE;
 						}
-						else if (m_theGrid[column - 1, row + letter] < Definitions.FIRST_LETTER)
-						{
-							//m_theGrid[column - 1, row + letter] = Definitions.UNUSABLE;
-						}
 					}
 					if (column + 1 < m_numberOfRows)
 					{
@@ -740,35 +766,7 @@ namespace SiriusCodeCracker
 						{
 							m_theGrid[column + 1, row + letter] = Definitions.VERTICAL_BESIDE;
 						}
-						else if (m_theGrid[column + 1, row + letter] < Definitions.FIRST_LETTER)
-						{
-							//m_theGrid[column + 1, row + letter] = Definitions.UNUSABLE;
-						}
 					}
-					/*
-					if (column > 0 && m_theGrid[column - 1, row + letter] >= Definitions.FIRST_LETTER)
-					{
-						if (row + letter > 0)
-						{
-							m_theGrid[column - 1, row + letter - 1] = Definitions.UNUSABLE;
-						}
-						if (row + letter + 1 < m_numberOfRows)
-						{
-							m_theGrid[column - 1, row + letter + 1] = Definitions.UNUSABLE;
-						}
-					}
-					if (column + 1 < m_numberOfRows && m_theGrid[column + 1, row + letter] >= Definitions.FIRST_LETTER)
-					{
-						if (row + letter > 0)
-						{
-							m_theGrid[column + 1, row + letter - 1] = Definitions.UNUSABLE;
-						}
-						if (row + letter + 1 < m_numberOfRows)
-						{
-							m_theGrid[column + 1, row + letter + 1] = Definitions.UNUSABLE;
-						}
-					}
-					*/
 				}
 			}
 			return true;
