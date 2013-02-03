@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
@@ -21,6 +21,8 @@ namespace SiriusCodeCracker
 
 		int m_shortestWord = 999;
 		int m_longestWord = 0;
+
+		Random m_randomiser = new Random(DateTime.Now.Millisecond);
 
 		Dictionary<int, List<GeneratorWord>> m_wordsByLength = new Dictionary<int, List<GeneratorWord>>();
 		Dictionary<int, List<GeneratorWord>>[,] m_characterPositions = new Dictionary<int, List<GeneratorWord>>[20, 26];
@@ -75,31 +77,106 @@ namespace SiriusCodeCracker
 			}
 		}
 
+
+		int m_startRow = 0;
+		int m_startColumn = 0;
+		bool m_horizontal = true;
+
+		public void PlaceNext()
+		{
+			if (!m_horizontal)
+			{
+				for (int column = 0; column < CodeCrackerCommon.Columns - m_shortestWord; column++)
+				{
+					if (PlaceWord(m_startRow, column, m_horizontal))
+					{
+						m_horizontal = !m_horizontal;
+						break;
+					}
+				}
+				m_startRow++;
+				if (m_startRow >= CodeCrackerCommon.Rows)
+				{
+					m_startRow = 0;
+					m_horizontal = true;
+				}
+			}
+			else
+			{
+				for (int row = 0; row < CodeCrackerCommon.Rows - m_shortestWord; row++)
+				{
+					if (PlaceWord(row, m_startColumn, m_horizontal))
+					{
+						m_horizontal = !m_horizontal;
+						break;
+					}
+				}
+				m_startColumn++;
+				if (m_startColumn >= CodeCrackerCommon.Columns)
+				{
+					m_startColumn = 0;
+					m_horizontal = false;
+				}
+			}
+		}
+
 		public void Populate(int numberOfRows, int numberOfColumns)
 		{
-			CrackerData.SetGridSize(numberOfRows, numberOfColumns);
+			CodeCrackerCommon.SetGridSize(numberOfRows, numberOfColumns);
 
 			int startRow = 0;
 			int startColumn = 0;
+			bool horizontal = true;
+			/*
+			// Start off with 5 in the top left quadrant to improve coverage.
+			int wordsToPlace = 5;
+			while (wordsToPlace > 0)
+			{
+				startRow = m_randomiser.Next(0, CodeCrackerCommon.Rows/2);
+				startColumn = m_randomiser.Next(0, CodeCrackerCommon.Columns/2);
+				horizontal = m_randomiser.Next(0, 100) > 50;
+
+				if (PlaceWord(startRow, startColumn, horizontal))
+				{
+					wordsToPlace--;
+				}
+			}
+			
+			// Then place the remaining words anywhere on the grid.
+			wordsToPlace = Math.Max(CodeCrackerCommon.Columns, CodeCrackerCommon.Rows) - 5;
+			while (wordsToPlace > 0)
+			{
+				startRow = m_randomiser.Next(0, CodeCrackerCommon.Rows - m_shortestWord);
+				startColumn = m_randomiser.Next(0, CodeCrackerCommon.Columns - m_shortestWord);
+				horizontal = m_randomiser.Next(0, 100) > 50;
+
+				if (PlaceWord(startRow, startColumn, horizontal))
+				{
+					wordsToPlace--;
+				}
+			}
+			*/
+
 			int charactersPlaced = 0;
 			int preferredLength = 0;
-			bool horizontal = true;
 
+			// Now go through twice working all cells horizontally and then vertically
+			// in an attempt to fill up some of the gaps.
 			for (int iteration = 0; iteration < 2; iteration++)
 			{
 				horizontal = true;
-				for (startRow = 0; startRow < CrackerData.Configuration.Rows; startRow++)
+				for (startRow = 0; startRow < CodeCrackerCommon.Rows; startRow++)
 				{
-					for (startColumn = 0; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
+					for (startColumn = 0; startColumn < CodeCrackerCommon.Columns - m_shortestWord; )
 					{
 						if (iteration == 0)
 						{
-							startColumn += CrackerData.NextRandom(0, 3) / 2;
+							startColumn += m_randomiser.Next(0, 3) / 2;
 						}
 
 						preferredLength = GetPreferredLength(iteration);
 
-						charactersPlaced = PlaceWord(startRow, startColumn, horizontal, preferredLength);
+						PlaceWord(startRow, startColumn, horizontal, out charactersPlaced, preferredLength);
 
 						if (charactersPlaced > 0)
 						{
@@ -111,20 +188,20 @@ namespace SiriusCodeCracker
 
 					horizontal = !horizontal;
 
-					for (startColumn = 0; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
+					for (startColumn = 0; startColumn < CodeCrackerCommon.Columns - m_shortestWord; )
 					{
 						if (iteration == 0)
 						{
-							startColumn += CrackerData.NextRandom(0, 3) / 2;
+							startColumn += m_randomiser.Next(0, 3) / 2;
 						}
 
 						preferredLength = GetPreferredLength(iteration);
 
-						charactersPlaced = PlaceWord(startRow, startColumn, horizontal, preferredLength);
+						PlaceWord(startRow, startColumn, horizontal, out charactersPlaced, preferredLength);
 
 						if (iteration == 0)
 						{
-							startColumn += CrackerData.NextRandom(2, 10);
+							startColumn += m_randomiser.Next(2, 10);
 						}
 						else
 						{
@@ -136,13 +213,13 @@ namespace SiriusCodeCracker
 				}
 
 				horizontal = false;
-				for (startColumn = 0; startColumn < CrackerData.Configuration.Columns; startColumn++)
+				for (startColumn = 0; startColumn < CodeCrackerCommon.Columns; startColumn++)
 				{
-					for (startRow = 0; startRow < CrackerData.Configuration.Rows - m_shortestWord; )
+					for (startRow = 0; startRow < CodeCrackerCommon.Rows - m_shortestWord; )
 					{
 						preferredLength = GetPreferredLength(iteration);
 
-						charactersPlaced = PlaceWord(startRow, startColumn, horizontal, preferredLength);
+						PlaceWord(startRow, startColumn, horizontal, out charactersPlaced, preferredLength);
 
 						if (charactersPlaced > 0)
 						{
@@ -154,15 +231,15 @@ namespace SiriusCodeCracker
 
 					horizontal = !horizontal;
 
-					for (startRow = 0; startRow < CrackerData.Configuration.Rows - m_shortestWord; )
+					for (startRow = 0; startRow < CodeCrackerCommon.Rows - m_shortestWord; )
 					{
 						preferredLength = GetPreferredLength(iteration);
 
-						charactersPlaced = PlaceWord(startRow, startColumn, horizontal, preferredLength);
+						PlaceWord(startRow, startColumn, horizontal, out charactersPlaced, preferredLength);
 
 						if (iteration == 0)
 						{
-							startRow += CrackerData.NextRandom(2, 10);
+							startRow += m_randomiser.Next(2, 10);
 						}
 						else
 						{
@@ -181,52 +258,56 @@ namespace SiriusCodeCracker
 
 			if (iteration == 0)
 			{
-				preferredLength = CrackerData.NextRandom(m_shortestWord * 2, m_longestWord);
+				preferredLength = m_randomiser.Next(m_shortestWord, m_longestWord); //m_randomiser.Next(6, m_longestWord));
 			}
 
 			return preferredLength;
 		}
 		
-		private int PlaceWord(int startRow, int startColumn, bool horizontal)
+		private bool PlaceWord(int startRow, int startColumn, bool horizontal)
 		{
-			return PlaceWord(startRow, startColumn, horizontal);
+			int charactersPlaced = 0;
+			return PlaceWord(startRow, startColumn, horizontal, out charactersPlaced);
 		}
 
-		private int PlaceWord(int startRow, int startColumn, bool horizontal, int preferredLength = 0)
+		private bool PlaceWord(int startRow, int startColumn, bool horizontal, out int charactersPlaced, int preferredLength = 0)
 		{
 			int maximumWordLength = 0;
+			bool result = false;
 			List<KeyValuePair<int, int>> existingLetters = new List<KeyValuePair<int, int>>();
 			GeneratorWord word = null;
+
+			charactersPlaced = 0;
 
 			if (horizontal)
 			{
 				// If the cell immediately before this word has a letter in it then the cell is not useable.
-				if (startColumn > 0 && CrackerData.CharacterGrid[startColumn - 1, startRow].IsLetter())
+				if (startColumn > 0 && CodeCrackerCommon.CharacterGrid[startColumn - 1, startRow].IsLetter())
 				{
-					return 0;
+					return false;
 				}
 				// If the first two letters are used then we must be on an existing word.
-				if (startColumn + 1 < CrackerData.Configuration.Columns &&
-					CrackerData.CharacterGrid[startColumn, startRow].IsLetter() &&
-					CrackerData.CharacterGrid[startColumn + 1, startRow].IsLetter())
+				if (startColumn + 1 < CodeCrackerCommon.Columns &&
+					CodeCrackerCommon.CharacterGrid[startColumn, startRow].IsLetter() &&
+					CodeCrackerCommon.CharacterGrid[startColumn + 1, startRow].IsLetter())
 				{
-					return 0;
+					return false;
 				}
 				// If the current cell is not filled but either of the adjacent are then the cell is not useable;
-				if (!CrackerData.CharacterGrid[startColumn, startRow].IsLetter() &&
-					((startRow > 0 && CrackerData.CharacterGrid[startColumn, startRow - 1].IsLetter()) ||
-					 (startRow + 1 < CrackerData.Configuration.Rows && CrackerData.CharacterGrid[startColumn, startRow + 1].IsLetter())))
+				if (!CodeCrackerCommon.CharacterGrid[startColumn, startRow].IsLetter() &&
+					((startRow > 0 && CodeCrackerCommon.CharacterGrid[startColumn, startRow - 1].IsLetter()) ||
+					 (startRow + 1 < CodeCrackerCommon.Rows && CodeCrackerCommon.CharacterGrid[startColumn, startRow + 1].IsLetter())))
 				{
-					return 0;
+					return false;
 				}
 
-				int maxColumn = CrackerData.Configuration.Columns;
+				int maxColumn = CodeCrackerCommon.Columns;
 				int aboveCount = 0;
 				int belowCount = 0;
-				for (int column = startColumn; column < CrackerData.Configuration.Columns; column++)
+				for (int column = startColumn; column < CodeCrackerCommon.Columns; column++)
 				{
-					if (CrackerData.CharacterGrid[column, startRow].HasHorizontalBeside() ||
-						CrackerData.CharacterGrid[column, startRow].IsUnusable())
+					if (CodeCrackerCommon.CharacterGrid[column, startRow].HasHorizontalBeside() ||
+						CodeCrackerCommon.CharacterGrid[column, startRow].IsUnusable())
 					{
 						maxColumn = column;
 						break;
@@ -234,7 +315,7 @@ namespace SiriusCodeCracker
 					// If a word lies immediately above this word then limit the word length.
 					if (startRow > 0)
 					{
-						if (CrackerData.CharacterGrid[column, startRow - 1].IsLetter())
+						if (CodeCrackerCommon.CharacterGrid[column, startRow - 1].IsLetter())
 						{
 							aboveCount++;
 						}
@@ -249,9 +330,9 @@ namespace SiriusCodeCracker
 						}
 					}
 					// If a word lies immediately below this word then limit the word length.
-					if (startRow + 1 < CrackerData.Configuration.Rows)
+					if (startRow + 1 < CodeCrackerCommon.Rows)
 					{
-						if (CrackerData.CharacterGrid[column, startRow + 1].IsLetter())
+						if (CodeCrackerCommon.CharacterGrid[column, startRow + 1].IsLetter())
 						{
 							belowCount++;
 						}
@@ -270,14 +351,14 @@ namespace SiriusCodeCracker
 
 				if (maximumWordLength < m_shortestWord)
 				{
-					return 0;
+					return false;
 				}
 
-				for (int column = startColumn; column < CrackerData.Configuration.Columns; column++)
+				for (int column = startColumn; column < CodeCrackerCommon.Columns; column++)
 				{
-					if (CrackerData.CharacterGrid[column, startRow].IsLetter())
+					if (CodeCrackerCommon.CharacterGrid[column, startRow].IsLetter())
 					{
-						int letterNumber = CrackerData.CharacterGrid[column, startRow].LetterNumber();
+						int letterNumber = CodeCrackerCommon.CharacterGrid[column, startRow].LetterNumber();
 						existingLetters.Add(new KeyValuePair<int, int>(column - startColumn, letterNumber));
 					}
 				}
@@ -285,32 +366,32 @@ namespace SiriusCodeCracker
 			else
 			{
 				// If the cell immediately before this word has a letter in it then the cell is not useable.
-				if (startRow > 0 && CrackerData.CharacterGrid[startColumn, startRow - 1].IsLetter())
+				if (startRow > 0 && CodeCrackerCommon.CharacterGrid[startColumn, startRow - 1].IsLetter())
 				{
-					return 0;
+					return false;
 				}
 				// If the first two letters are used then we must be on an existing word.
-				if (startRow + 1 < CrackerData.Configuration.Rows &&
-					CrackerData.CharacterGrid[startColumn, startRow].IsLetter() &&
-					CrackerData.CharacterGrid[startColumn, startRow + 1].IsLetter())
+				if (startRow + 1 < CodeCrackerCommon.Rows &&
+					CodeCrackerCommon.CharacterGrid[startColumn, startRow].IsLetter() &&
+					CodeCrackerCommon.CharacterGrid[startColumn, startRow + 1].IsLetter())
 				{
-					return 0;
+					return false;
 				}
 				// If the current cell is not filled but either of the adjacent are then the cell is not useable;
-				if (!CrackerData.CharacterGrid[startColumn, startRow].IsLetter() &&
-					((startColumn > 0 && CrackerData.CharacterGrid[startColumn - 1, startRow].IsLetter()) ||
-					 (startColumn + 1 < CrackerData.Configuration.Columns && CrackerData.CharacterGrid[startColumn + 1, startRow].IsLetter())))
+				if (!CodeCrackerCommon.CharacterGrid[startColumn, startRow].IsLetter() &&
+					((startColumn > 0 && CodeCrackerCommon.CharacterGrid[startColumn - 1, startRow].IsLetter()) ||
+					 (startColumn + 1 < CodeCrackerCommon.Columns && CodeCrackerCommon.CharacterGrid[startColumn + 1, startRow].IsLetter())))
 				{
-					return 0;
+					return false;
 				}
 
-				int maxRow = CrackerData.Configuration.Rows;
+				int maxRow = CodeCrackerCommon.Rows;
 				int leftCount = 0;
 				int rightCount = 0;
-				for (int row = startRow; row < CrackerData.Configuration.Rows; row++)
+				for (int row = startRow; row < CodeCrackerCommon.Rows; row++)
 				{
-					if (CrackerData.CharacterGrid[startColumn, row].HasVerticalBeside() ||
-						CrackerData.CharacterGrid[startColumn, row].IsUnusable())
+					if (CodeCrackerCommon.CharacterGrid[startColumn, row].HasVerticalBeside() ||
+						CodeCrackerCommon.CharacterGrid[startColumn, row].IsUnusable())
 					{
 						maxRow = row;
 						break;
@@ -319,7 +400,7 @@ namespace SiriusCodeCracker
 					// If a word lies immediately left of this word then limit the word length.
 					if (startColumn > 0)
 					{
-						if (CrackerData.CharacterGrid[startColumn - 1, row].IsLetter())
+						if (CodeCrackerCommon.CharacterGrid[startColumn - 1, row].IsLetter())
 						{
 							leftCount++;
 						}
@@ -334,9 +415,9 @@ namespace SiriusCodeCracker
 						}
 					}
 					// If a word lies immediately below this word then limit the word length.
-					if (startColumn + 1 < CrackerData.Configuration.Columns)
+					if (startColumn + 1 < CodeCrackerCommon.Columns)
 					{
-						if (CrackerData.CharacterGrid[startColumn + 1, row].IsLetter())
+						if (CodeCrackerCommon.CharacterGrid[startColumn + 1, row].IsLetter())
 						{
 							rightCount++;
 						}
@@ -355,14 +436,14 @@ namespace SiriusCodeCracker
 
 				if (maximumWordLength < m_shortestWord)
 				{
-					return 0;
+					return false;
 				}
 
-				for (int row = startRow; row < CrackerData.Configuration.Rows; row++)
+				for (int row = startRow; row < CodeCrackerCommon.Rows; row++)
 				{
-					if (CrackerData.CharacterGrid[startColumn, row].IsLetter())
+					if (CodeCrackerCommon.CharacterGrid[startColumn, row].IsLetter())
 					{
-						int letterNumber = CrackerData.CharacterGrid[startColumn, row].LetterNumber();
+						int letterNumber = CodeCrackerCommon.CharacterGrid[startColumn, row].LetterNumber();
 						existingLetters.Add(new KeyValuePair<int, int>(row - startRow, letterNumber));
 					}
 				}
@@ -370,7 +451,7 @@ namespace SiriusCodeCracker
 
 			if (maximumWordLength < m_shortestWord)
 			{
-				return 0;
+				return false;
 			}
 
 			if (preferredLength > 0 && preferredLength < maximumWordLength)
@@ -407,13 +488,13 @@ namespace SiriusCodeCracker
 								{
 									continue;
 								}
-								if (horizontal && startColumn + wordLength < CrackerData.Configuration.Columns &&
-									CrackerData.CharacterGrid[startColumn + wordLength, startRow].IsLetter())
+								if (horizontal && startColumn + wordLength < CodeCrackerCommon.Columns &&
+									CodeCrackerCommon.CharacterGrid[startColumn + wordLength, startRow].IsLetter())
 								{
 									continue;
 								}
-								if (!horizontal && startRow + wordLength < CrackerData.Configuration.Rows &&
-									CrackerData.CharacterGrid[startColumn, startRow + wordLength].IsLetter())
+								if (!horizontal && startRow + wordLength < CodeCrackerCommon.Rows &&
+									CodeCrackerCommon.CharacterGrid[startColumn, startRow + wordLength].IsLetter())
 								{
 									continue;
 								}
@@ -455,10 +536,14 @@ namespace SiriusCodeCracker
 
 			if (word != null)
 			{
-				AddWordToGrid(word, startRow, startColumn, horizontal);
+				if (AddWordToGrid(word, startRow, startColumn, horizontal))
+				{
+					charactersPlaced = word.Length;
+					result = true;
+				}
 			}
 
-			return (word == null ? 0 : word.Length);
+			return result;
 		}
 
 		private GeneratorWord SelectWord(Dictionary<int, List<GeneratorWord>> wordDictionary, int maximumWordLength, int startRow, int startColumn, bool horizontal)
@@ -473,19 +558,19 @@ namespace SiriusCodeCracker
 				{
 					for (int i = 0; i < wordDictionary[wordLength].Count; i++)
 					{
-						int index = CrackerData.NextRandom(0, wordDictionary[wordLength].Count);
+						int index = m_randomiser.Next(0, wordDictionary[wordLength].Count);
 
 						if (wordDictionary[wordLength][index].Used)
 						{
 							continue;
 						}
-						if (horizontal && startColumn + wordLength < CrackerData.Configuration.Columns &&
-									CrackerData.CharacterGrid[startColumn + wordLength, startRow].IsLetter())
+						if (horizontal && startColumn + wordLength < CodeCrackerCommon.Columns &&
+									CodeCrackerCommon.CharacterGrid[startColumn + wordLength, startRow].IsLetter())
 						{
 							continue;
 						}
-						if (!horizontal && startRow + wordLength < CrackerData.Configuration.Rows &&
-							CrackerData.CharacterGrid[startColumn, startRow + wordLength].IsLetter())
+						if (!horizontal && startRow + wordLength < CodeCrackerCommon.Rows &&
+							CodeCrackerCommon.CharacterGrid[startColumn, startRow + wordLength].IsLetter())
 						{
 							continue;
 						}
@@ -544,8 +629,8 @@ namespace SiriusCodeCracker
 			{
 				for (int letter = 0; letter < word.Length; letter++)
 				{
-					if (CrackerData.CharacterGrid[column + letter, row].IsLetter() &&
-						CrackerData.CharacterGrid[column + letter, row].Letter != word.Word[letter])
+					if (CodeCrackerCommon.CharacterGrid[column + letter, row].IsLetter() &&
+						CodeCrackerCommon.CharacterGrid[column + letter, row].Letter != word.Word[letter])
 					{
 						return false;
 					}
@@ -555,8 +640,8 @@ namespace SiriusCodeCracker
 			{
 				for (int letter = 0; letter < word.Length; letter++)
 				{
-					if (CrackerData.CharacterGrid[column, row + letter].IsLetter() &&
-						CrackerData.CharacterGrid[column, row + letter].Letter != word.Word[letter])
+					if (CodeCrackerCommon.CharacterGrid[column, row + letter].IsLetter() &&
+						CodeCrackerCommon.CharacterGrid[column, row + letter].Letter != word.Word[letter])
 					{
 						return false;
 					}
@@ -565,34 +650,34 @@ namespace SiriusCodeCracker
 
 			word.Used = true;
 
-			CrackerData.GridWords.Add(new CodeWord(word.Word, row, column, horizontal));
+			CodeCrackerCommon.GridWords.Add(new CodeWord(word.Word, row, column, horizontal));
 
 			if (horizontal)
 			{
 				if (column > 0)
 				{
-					CrackerData.CharacterGrid[column - 1, row].SetUnusable();
+					CodeCrackerCommon.CharacterGrid[column - 1, row].SetUnusable();
 				}
-				if (column + word.Length < CrackerData.Configuration.Columns)
+				if (column + word.Length < CodeCrackerCommon.Columns)
 				{
-					CrackerData.CharacterGrid[column + word.Length, row].SetUnusable();
+					CodeCrackerCommon.CharacterGrid[column + word.Length, row].SetUnusable();
 				}
 				for (int letter = 0; letter < word.Length; letter++)
 				{
-					CrackerData.CharacterGrid[column + letter, row].Letter = word.Word[letter];
+					CodeCrackerCommon.CharacterGrid[column + letter, row].Letter = word.Word[letter];
 
 					if (row > 0)
 					{
-						if (CrackerData.CharacterGrid[column + letter, row - 1].IsEmpty())
+						if (CodeCrackerCommon.CharacterGrid[column + letter, row - 1].IsEmpty())
 						{
-							CrackerData.CharacterGrid[column + letter, row - 1].SetHorizontalBeside();
+							CodeCrackerCommon.CharacterGrid[column + letter, row - 1].SetHorizontalBeside();
 						}
 					}
-					if (row + 1 < CrackerData.Configuration.Rows)
+					if (row + 1 < CodeCrackerCommon.Rows)
 					{
-						if (CrackerData.CharacterGrid[column + letter, row + 1].IsEmpty())
+						if (CodeCrackerCommon.CharacterGrid[column + letter, row + 1].IsEmpty())
 						{
-							CrackerData.CharacterGrid[column + letter, row + 1].SetHorizontalBeside();
+							CodeCrackerCommon.CharacterGrid[column + letter, row + 1].SetHorizontalBeside();
 						}
 					}
 				}
@@ -601,28 +686,28 @@ namespace SiriusCodeCracker
 			{
 				if (row > 0)
 				{
-					CrackerData.CharacterGrid[column, row - 1].SetUnusable();
+					CodeCrackerCommon.CharacterGrid[column, row - 1].SetUnusable();
 				}
-				if (row + word.Length < CrackerData.Configuration.Rows)
+				if (row + word.Length < CodeCrackerCommon.Rows)
 				{
-					CrackerData.CharacterGrid[column, row + word.Length].SetUnusable();
+					CodeCrackerCommon.CharacterGrid[column, row + word.Length].SetUnusable();
 				}
 				for (int letter = 0; letter < word.Length; letter++)
 				{
-					CrackerData.CharacterGrid[column, row + letter].Letter = word.Word[letter];
+					CodeCrackerCommon.CharacterGrid[column, row + letter].Letter = word.Word[letter];
 
 					if (column > 0)
 					{
-						if (CrackerData.CharacterGrid[column - 1, row + letter].IsEmpty())
+						if (CodeCrackerCommon.CharacterGrid[column - 1, row + letter].IsEmpty())
 						{
-							CrackerData.CharacterGrid[column - 1, row + letter].SetVerticalBeside();
+							CodeCrackerCommon.CharacterGrid[column - 1, row + letter].SetVerticalBeside();
 						}
 					}
-					if (column + 1 < CrackerData.Configuration.Rows)
+					if (column + 1 < CodeCrackerCommon.Rows)
 					{
-						if (CrackerData.CharacterGrid[column + 1, row + letter].IsEmpty())
+						if (CodeCrackerCommon.CharacterGrid[column + 1, row + letter].IsEmpty())
 						{
-							CrackerData.CharacterGrid[column + 1, row + letter].SetVerticalBeside();
+							CodeCrackerCommon.CharacterGrid[column + 1, row + letter].SetVerticalBeside();
 						}
 					}
 				}

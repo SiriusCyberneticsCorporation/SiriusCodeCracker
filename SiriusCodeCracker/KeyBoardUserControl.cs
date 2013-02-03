@@ -11,22 +11,6 @@ namespace SiriusCodeCracker
 {
 	public partial class KeyBoardUserControl : UserControl
 	{
-		class KeyData
-		{
-			public KeyData(char letter)
-			{
-				m_letter = letter;
-			}
-			public char m_letter;
-			public int m_number;
-			public bool m_used = false;
-			public bool m_given = false;
-		}
-
-		KeyData[] m_row1 = new KeyData[10];
-		KeyData[] m_row2 = new KeyData[9];
-		KeyData[] m_row3 = new KeyData[9];
-
 		bool m_resized = true;
 		Font m_keyLetterFont;
 		Font m_letterFont;
@@ -37,46 +21,83 @@ namespace SiriusCodeCracker
 		{
 			InitializeComponent();
 
-			m_row1[0] = new KeyData('Q');
-			m_row1[1] = new KeyData('W');
-			m_row1[2] = new KeyData('E');
-			m_row1[3] = new KeyData('R');
-			m_row1[4] = new KeyData('T');
-			m_row1[5] = new KeyData('Y');
-			m_row1[6] = new KeyData('U');
-			m_row1[7] = new KeyData('I');
-			m_row1[8] = new KeyData('O');
-			m_row1[9] = new KeyData('P');
+			CrackerData.Keyboard[0, 0] = new KeyboardCharacter('Q');
+			CrackerData.Keyboard[0, 1] = new KeyboardCharacter('W');
+			CrackerData.Keyboard[0, 2] = new KeyboardCharacter('E');
+			CrackerData.Keyboard[0, 3] = new KeyboardCharacter('R');
+			CrackerData.Keyboard[0, 4] = new KeyboardCharacter('T');
+			CrackerData.Keyboard[0, 5] = new KeyboardCharacter('Y');
+			CrackerData.Keyboard[0, 6] = new KeyboardCharacter('U');
+			CrackerData.Keyboard[0, 7] = new KeyboardCharacter('I');
+			CrackerData.Keyboard[0, 8] = new KeyboardCharacter('O');
+			CrackerData.Keyboard[0, 9] = new KeyboardCharacter('P');
 
-			m_row2[0] = new KeyData('A');
-			m_row2[1] = new KeyData('S');
-			m_row2[2] = new KeyData('D');
-			m_row2[3] = new KeyData('F');
-			m_row2[4] = new KeyData('G');
-			m_row2[5] = new KeyData('H');
-			m_row2[6] = new KeyData('J');
-			m_row2[7] = new KeyData('K');
-			m_row2[8] = new KeyData('L');
+			CrackerData.Keyboard[1, 0] = new KeyboardCharacter('A');
+			CrackerData.Keyboard[1, 1] = new KeyboardCharacter('S');
+			CrackerData.Keyboard[1, 2] = new KeyboardCharacter('D');
+			CrackerData.Keyboard[1, 3] = new KeyboardCharacter('F');
+			CrackerData.Keyboard[1, 4] = new KeyboardCharacter('G');
+			CrackerData.Keyboard[1, 5] = new KeyboardCharacter('H');
+			CrackerData.Keyboard[1, 6] = new KeyboardCharacter('J');
+			CrackerData.Keyboard[1, 7] = new KeyboardCharacter('K');
+			CrackerData.Keyboard[1, 8] = new KeyboardCharacter('L');
 
-			m_row3[0] = new KeyData('-');
-			m_row3[1] = new KeyData('Z');
-			m_row3[2] = new KeyData('X');
-			m_row3[3] = new KeyData('C');
-			m_row3[4] = new KeyData('V');
-			m_row3[5] = new KeyData('B');
-			m_row3[6] = new KeyData('N');
-			m_row3[7] = new KeyData('M');
-			m_row3[8] = new KeyData('-');
+			CrackerData.Keyboard[2, 0] = new KeyboardCharacter('-');
+			CrackerData.Keyboard[2, 1] = new KeyboardCharacter('Z');
+			CrackerData.Keyboard[2, 2] = new KeyboardCharacter('X');
+			CrackerData.Keyboard[2, 3] = new KeyboardCharacter('C');
+			CrackerData.Keyboard[2, 4] = new KeyboardCharacter('V');
+			CrackerData.Keyboard[2, 5] = new KeyboardCharacter('B');
+			CrackerData.Keyboard[2, 6] = new KeyboardCharacter('N');
+			CrackerData.Keyboard[2, 7] = new KeyboardCharacter('M');
+			CrackerData.Keyboard[2, 8] = new KeyboardCharacter('-');
 
+			for (int keyNumber = 0; keyNumber < 10; keyNumber++)
+			{
+				CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[0, keyNumber].Letter, CrackerData.Keyboard[0, keyNumber]);
+			}
+
+			for (int keyNumber = 0; keyNumber < 9; keyNumber++)
+			{
+				CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[1, keyNumber].Letter, CrackerData.Keyboard[1, keyNumber]);
+			}
+
+			for (int keyNumber = 1; keyNumber < 8; keyNumber++)
+			{
+				CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[2, keyNumber].Letter, CrackerData.Keyboard[2, keyNumber]);
+
+			} 
 			m_centreFormat = new StringFormat();
 			m_centreFormat.LineAlignment = StringAlignment.Center;
 			m_centreFormat.Alignment = StringAlignment.Center;
-
-
-			m_row1[4].m_used = true;
-			m_row1[8].m_given = true;
+		}
+		/*
+		public void ResetKeyboard()
+		{
+			foreach (char letter in CrackerData.KeyboardLookup.Keys)
+			{
+				CrackerData.KeyboardLookup[letter].Used = false;
+				CrackerData.KeyboardLookup[letter].Given = false;
+				CrackerData.KeyboardLookup[letter].Selected = false;
+			}
+		}
+		
+		public void MarkAsGiven(char letter)
+		{
+			if (CrackerData.KeyboardLookup.ContainsKey(letter))
+			{
+				CrackerData.KeyboardLookup[letter].Given = true;
+			}
 		}
 
+		public void MarkAsUsed(char letter)
+		{
+			if (CrackerData.KeyboardLookup.ContainsKey(letter))
+			{
+				CrackerData.KeyboardLookup[letter].Used = true;
+			}
+		}
+		*/
 		private void KeyBoardUserControl_Paint(object sender, PaintEventArgs e)
 		{
 			float keyWidth = (float)this.Width / (float)10.0f;
@@ -101,13 +122,13 @@ namespace SiriusCodeCracker
 
 			for (int keyNumber = 0; keyNumber < 10; keyNumber++)
 			{
-				DrawKey(m_row1[keyNumber], e.Graphics, (keyWidth * keyNumber), 0, keyWidth, keyHeight);
+				DrawKey(CrackerData.Keyboard[0, keyNumber], e.Graphics, (keyWidth * keyNumber), 0, keyWidth, keyHeight);
 			}
 
 			float keyX = keyWidth / 2;
 			for (int keyNumber = 0; keyNumber < 9; keyNumber++)
 			{
-				DrawKey(m_row2[keyNumber], e.Graphics, keyX, keyHeight, keyWidth, keyHeight);
+				DrawKey(CrackerData.Keyboard[1, keyNumber], e.Graphics, keyX, keyHeight, keyWidth, keyHeight);
 				keyX += keyWidth;
 			}
 
@@ -116,44 +137,44 @@ namespace SiriusCodeCracker
 			{
 				if (keyNumber == 0 || keyNumber == 8)
 				{
-					DrawKey(m_row3[keyNumber], e.Graphics, keyX, keyHeight * 2, keyWidth * 1.5f, keyHeight);
+					DrawKey(CrackerData.Keyboard[2, keyNumber], e.Graphics, keyX, keyHeight * 2, keyWidth * 1.5f, keyHeight);
 					keyX += keyWidth * 1.5f;
 				}
 				else
 				{
-					DrawKey(m_row3[keyNumber], e.Graphics, keyX, keyHeight * 2, keyWidth, keyHeight);
+					DrawKey(CrackerData.Keyboard[2, keyNumber], e.Graphics, keyX, keyHeight * 2, keyWidth, keyHeight);
 					keyX += keyWidth;
 				}
 			}
 		}
 
-		private void DrawKey(KeyData key, Graphics g, float keyX, float keyY, float keyWidth, float keyHeight)
+		private void DrawKey(KeyboardCharacter key, Graphics g, float keyX, float keyY, float keyWidth, float keyHeight)
 		{
-			if (key.m_given)
+			if (key.Given)
 			{
-				RectangleF letterCell = new RectangleF(keyX, keyY, keyWidth * 0.95f, keyHeight * 0.95f);
-				RectangleF numberCell = new RectangleF(keyX + (keyWidth * 0.4f), keyY + keyHeight * 0.35f, keyWidth * 0.7f, keyHeight * 0.7f);
+				RectangleF letterCell = new RectangleF(keyX, keyY, keyWidth * 0.9f, keyHeight * 0.9f);
+				RectangleF numberCell = new RectangleF(keyX + (keyWidth * 0.5f), keyY + (keyHeight * 0.35f), keyWidth * 0.55f, keyHeight * 0.65f);
 
-				g.DrawString(key.m_letter.ToString(), m_letterFont, Brushes.Blue, letterCell, m_centreFormat);
-				g.DrawString(key.m_number.ToString(), m_numberFont, Brushes.Blue, numberCell, m_centreFormat);
+				g.DrawString(key.Letter.ToString(), m_letterFont, CrackerData.Configuration.GivenBrush, letterCell, m_centreFormat);
+				g.DrawString(CrackerData.GetNumber(key.Letter).ToString(), m_numberFont, CrackerData.Configuration.GivenBrush, numberCell, m_centreFormat);
 			}
-			else if (key.m_used)
+			else if (key.Used)
 			{
-				RectangleF letterCell = new RectangleF(keyX, keyY, keyWidth * 0.95f, keyHeight * 0.95f);
-				RectangleF numberCell = new RectangleF(keyX + (keyWidth * 0.4f), keyY + keyHeight * 0.35f, keyWidth * 0.7f, keyHeight * 0.7f);
+				RectangleF letterCell = new RectangleF(keyX, keyY, keyWidth * 0.9f, keyHeight * 0.9f);
+				RectangleF numberCell = new RectangleF(keyX + (keyWidth * 0.5f), keyY + (keyHeight * 0.35f), keyWidth * 0.55f, keyHeight * 0.65f);
 
-				g.DrawString(key.m_letter.ToString(), m_letterFont, Brushes.Gray, letterCell, m_centreFormat);
-				g.DrawString(key.m_number.ToString(), m_numberFont, Brushes.Gray, numberCell, m_centreFormat);
+				g.DrawString(key.Letter.ToString(), m_letterFont, CrackerData.Configuration.UsedLetterBrush, letterCell, m_centreFormat);
+				g.DrawString(CrackerData.GetNumber(key.Letter).ToString(), m_numberFont, CrackerData.Configuration.UsedLetterBrush, numberCell, m_centreFormat);
 			}
 			else
 			{
 				RectangleF keyCell = new RectangleF(keyX, keyY, keyWidth, keyHeight);
 
-				Tools.DrawRoundedRectangle(g, keyCell, Pens.Black, Color.White);
+				Tools.DrawRoundedRectangle(g, keyCell, CrackerData.Configuration.GridPen, CrackerData.Configuration.BackgroundColour);
 
 				keyCell.Inflate(-0.2f, -0.2f);
 				keyCell.Y += keyCell.Height * 0.05f;
-				g.DrawString(key.m_letter.ToString(), m_keyLetterFont, Brushes.Black, keyCell, m_centreFormat);
+				g.DrawString(key.Letter.ToString(), m_keyLetterFont, CrackerData.Configuration.LetterBrush, keyCell, m_centreFormat);
 			}
 		}
 
