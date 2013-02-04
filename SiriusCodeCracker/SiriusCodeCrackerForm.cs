@@ -16,12 +16,35 @@ namespace SiriusCodeCracker
 		public SiriusCodeCrackerForm()
 		{
 			InitializeComponent();
+
+			CrosswordGrid.CellSelected += new GridDisplayUserControl.CellSelectedHandler(CrosswordGrid_CellSelected);
+			CodeCrackerKeyBoard.LetterSelected += new KeyBoardUserControl.LetterSelectedHandler(CodeCrackerKeyBoard_LetterSelected);
+		}
+
+		void CodeCrackerKeyBoard_LetterSelected()
+		{
+			if (CrackerData.CheckCompletion())
+			{
+				CrosswordGrid.Refresh();
+				CodeCrackerKeyBoard.Refresh();
+
+				MessageBox.Show("Congratulations, you have unravelled the code", "Puzzle Complete");
+			}
+			else
+			{
+				CrosswordGrid.Refresh();
+				CodeCrackerKeyBoard.Refresh();
+			}
+		}
+
+		void CrosswordGrid_CellSelected()
+		{
+			CodeCrackerKeyBoard.Refresh();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			m_crosswordGenerator.Populate(20,20);
-			CrackerData.AssignGivenLetters(3, true);
+			m_crosswordGenerator.Populate();
 
 			CrosswordGrid.Refresh();
 			CodeCrackerKeyBoard.Refresh();
@@ -32,6 +55,15 @@ namespace SiriusCodeCracker
 			CodeCrackerSettingsForm iCodeCrackerSettingsForm = new CodeCrackerSettingsForm();
 			
 			iCodeCrackerSettingsForm.ShowDialog(this);
+		}
+
+		private void SiriusCodeCrackerForm_KeyPress(object sender, KeyPressEventArgs e)
+		{
+		}
+
+		private void SiriusCodeCrackerForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			CodeCrackerKeyBoard.HandleKeyPress(e.KeyCode);
 		}
 
 	}

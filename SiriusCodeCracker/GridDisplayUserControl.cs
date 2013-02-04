@@ -11,6 +11,9 @@ namespace SiriusCodeCracker
 {
 	public partial class GridDisplayUserControl : UserControl
 	{
+		public delegate void CellSelectedHandler();
+		public event CellSelectedHandler CellSelected;
+
 		public GridDisplayUserControl()
 		{
 			InitializeComponent();
@@ -42,6 +45,83 @@ namespace SiriusCodeCracker
 			letterFormat.Alignment = StringAlignment.Center;
 
 			e.Graphics.Clear(CrackerData.Configuration.BackgroundColour);
+
+			if (CrackerData.CharacterGrid != null)
+			{
+				if (CrackerData.Configuration.ShowIncorrectWords)
+				{
+					foreach (CodeWord gridWord in CrackerData.GridWords)
+					{
+						if (!gridWord.Correct && gridWord.Complete)
+						{
+							RectangleF cell;
+
+							if (gridWord.Horizontal)
+							{
+								cell = new RectangleF(columnWidth * gridWord.Column, rowHeight * gridWord.Row, 
+														columnWidth * gridWord.Word.Length, rowHeight);
+							}
+							else
+							{
+								cell = new RectangleF(columnWidth * gridWord.Column, rowHeight * gridWord.Row,
+														columnWidth, rowHeight * gridWord.Word.Length);
+							}
+							e.Graphics.FillRectangle(CrackerData.Configuration.ErrorBrush, cell);
+						}
+					}
+				}
+
+
+				for (int column = 0; column < CrackerData.Configuration.Columns; column++)
+				{
+					for (int row = 0; row < CrackerData.Configuration.Rows; row++)
+					{
+						RectangleF cell = new RectangleF(columnWidth * column, rowHeight * row, columnWidth, rowHeight);
+
+						if (CrackerData.SelectedCharacter != null)
+						{
+							if (CrackerData.CharacterGrid[column, row].CorrectLetter == CrackerData.SelectedCharacter.CorrectLetter)
+							{
+								e.Graphics.FillRectangle(CrackerData.Configuration.HighlightBrush, cell);
+							}
+						}
+
+						if (CrackerData.CharacterGrid[column, row].IsGiven())
+						{
+							string letter = CrackerData.CharacterGrid[column, row].CorrectLetter.ToString();
+							e.Graphics.DrawString(letter, letterFont, CrackerData.Configuration.GivenBrush, cell, letterFormat);
+						}
+						else if (!CrackerData.CharacterGrid[column, row].IsLetter())
+						{
+							e.Graphics.FillRectangle(CrackerData.Configuration.GridBrush, cell);
+						}
+						else
+						{
+							string letter = CrackerData.CharacterGrid[column, row].SelectedLetter.ToString();
+
+							if (CrackerData.Configuration.ShowAllErrors && 
+								CrackerData.CharacterGrid[column, row].SelectedLetter != GridCharacter.NO_LETTER &&
+								CrackerData.CharacterGrid[column, row].SelectedLetter != CrackerData.CharacterGrid[column, row].CorrectLetter)
+							{
+								e.Graphics.FillRectangle(CrackerData.Configuration.ErrorBrush, cell);
+							}
+
+							if (CrackerData.CharacterGrid[column, row].GameState == Enumerations.CellGameState.Number)
+							{
+								e.Graphics.DrawString(CrackerData.GetNumber(CrackerData.CharacterGrid[column, row].CorrectLetter).ToString(),
+														numberFont, CrackerData.Configuration.NumberBrush, cell, letterFormat);
+							}
+							else
+							{
+								e.Graphics.DrawString(letter, letterFont, CrackerData.Configuration.LetterBrush, cell, letterFormat);
+							}
+						}
+						
+					}
+				}
+			}
+
+			// Draw the lines last to cover the edges of highlighted cells.
 			e.Graphics.DrawLine(CrackerData.Configuration.GridPen, topLeft, topRight);
 			e.Graphics.DrawLine(CrackerData.Configuration.GridPen, topRight, bottomRight);
 			e.Graphics.DrawLine(CrackerData.Configuration.GridPen, bottomRight, bottomLeft);
@@ -61,47 +141,28 @@ namespace SiriusCodeCracker
 
 				e.Graphics.DrawLine(CrackerData.Configuration.GridPen, start, finish);
 			}
-
-			if (CrackerData.CharacterGrid != null)
-			{
-				for (int column = 0; column < CrackerData.Configuration.Columns; column++)
-				{
-					for (int row = 0; row < CrackerData.Configuration.Rows; row++)
-					{
-						RectangleF cell = new RectangleF(columnWidth * column, rowHeight * row, columnWidth, rowHeight);
-
-						if (CrackerData.CharacterGrid[column, row].IsGiven())
-						{
-							string letter = CrackerData.CharacterGrid[column, row].Letter.ToString();
-							e.Graphics.DrawString(letter, letterFont, CrackerData.Configuration.GivenBrush, cell, letterFormat);
-						}
-						else if (!CrackerData.CharacterGrid[column, row].IsLetter())
-						{
-							e.Graphics.FillRectangle(CrackerData.Configuration.GridBrush, cell);
-						}
-						else
-						{
-							string letter = CrackerData.CharacterGrid[column, row].Letter.ToString();
-
-							if (CrackerData.CharacterGrid[column, row].GameState == Enumerations.CellGameState.Number)
-							{
-								e.Graphics.DrawString(CrackerData.GetNumber(CrackerData.CharacterGrid[column, row].Letter).ToString(),
-														numberFont, CrackerData.Configuration.NumberBrush, cell, letterFormat);
-							}
-							else
-							{
-								e.Graphics.DrawString(letter, letterFont, CrackerData.Configuration.LetterBrush, cell, letterFormat);
-							}
-						}
-						
-					}
-				}
-			}
 		}
+
 
 		private void GridDisplayUserControl_Resize(object sender, EventArgs e)
 		{
 			this.Refresh();
+		}
+
+		private void GridDisplayUserControl_MouseClick(object sender, MouseEventArgs e)
+		{
+			float columnWidth = (float)this.Width / (float)CrackerData.Configuration.Columns;
+			float rowHeight = (float)this.Height / (float)CrackerData.Configuration.Rows;
+
+			int columnSelected = (int)(e.X / columnWidth);
+			int rowSelected = (int)(e.Y / rowHeight);
+
+			CrackerData.SelectCell(columnSelected, rowSelected);
+			this.Refresh();
+			if (CellSelected != null)
+			{
+				CellSelected();
+			}
 		}
 	}
 }

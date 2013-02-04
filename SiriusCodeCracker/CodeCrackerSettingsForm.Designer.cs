@@ -29,6 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.pictureBox2 = new System.Windows.Forms.PictureBox();
+			this.label8 = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.label7 = new System.Windows.Forms.Label();
 			this.NumberColourPictureBox = new System.Windows.Forms.PictureBox();
@@ -45,9 +47,8 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.ColumnsNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.ColourSelectionDialog = new System.Windows.Forms.ColorDialog();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
-			this.label8 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumberColourPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.GridColourPictureBox)).BeginInit();
@@ -56,7 +57,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.ColourTestArea)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.RowsNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.ColumnsNumericUpDown)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -85,9 +85,28 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Playing Grid";
 			// 
+			// pictureBox2
+			// 
+			this.pictureBox2.BackColor = System.Drawing.Color.Blue;
+			this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.pictureBox2.Location = new System.Drawing.Point(248, 115);
+			this.pictureBox2.Name = "pictureBox2";
+			this.pictureBox2.Size = new System.Drawing.Size(48, 20);
+			this.pictureBox2.TabIndex = 21;
+			this.pictureBox2.TabStop = false;
+			// 
+			// label8
+			// 
+			this.label8.Location = new System.Drawing.Point(142, 115);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(100, 20);
+			this.label8.TabIndex = 20;
+			this.label8.Text = "Given Letter Colour";
+			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
 			// pictureBox1
 			// 
-			this.pictureBox1.BackColor = System.Drawing.Color.Aquamarine;
+			this.pictureBox1.BackColor = System.Drawing.Color.DarkSlateGray;
 			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.pictureBox1.Location = new System.Drawing.Point(248, 94);
 			this.pictureBox1.Name = "pictureBox1";
@@ -251,25 +270,6 @@
             0,
             0});
 			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.BackColor = System.Drawing.Color.Blue;
-			this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.pictureBox2.Location = new System.Drawing.Point(248, 115);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(48, 20);
-			this.pictureBox2.TabIndex = 21;
-			this.pictureBox2.TabStop = false;
-			// 
-			// label8
-			// 
-			this.label8.Location = new System.Drawing.Point(142, 115);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(100, 20);
-			this.label8.TabIndex = 20;
-			this.label8.Text = "Given Letter Colour";
-			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
 			// CodeCrackerSettingsForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,6 +286,7 @@
 			this.Text = "CodeCrackerSettingsForm";
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumberColourPictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.GridColourPictureBox)).EndInit();
@@ -294,7 +295,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.ColourTestArea)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.RowsNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.ColumnsNumericUpDown)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
 
 		}

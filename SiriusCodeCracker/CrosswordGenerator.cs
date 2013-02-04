@@ -75,9 +75,9 @@ namespace SiriusCodeCracker
 			}
 		}
 
-		public void Populate(int numberOfRows, int numberOfColumns)
+		public void Populate()
 		{
-			CrackerData.SetGridSize(numberOfRows, numberOfColumns);
+			CrackerData.ResetGrid();
 
 			int startRow = 0;
 			int startColumn = 0;
@@ -173,6 +173,8 @@ namespace SiriusCodeCracker
 					horizontal = !horizontal;
 				}
 			}
+
+			CrackerData.AssignGivenLetters();
 		}
 
 		private int GetPreferredLength(int iteration)
@@ -545,7 +547,7 @@ namespace SiriusCodeCracker
 				for (int letter = 0; letter < word.Length; letter++)
 				{
 					if (CrackerData.CharacterGrid[column + letter, row].IsLetter() &&
-						CrackerData.CharacterGrid[column + letter, row].Letter != word.Word[letter])
+						CrackerData.CharacterGrid[column + letter, row].CorrectLetter != word.Word[letter])
 					{
 						return false;
 					}
@@ -556,7 +558,7 @@ namespace SiriusCodeCracker
 				for (int letter = 0; letter < word.Length; letter++)
 				{
 					if (CrackerData.CharacterGrid[column, row + letter].IsLetter() &&
-						CrackerData.CharacterGrid[column, row + letter].Letter != word.Word[letter])
+						CrackerData.CharacterGrid[column, row + letter].CorrectLetter != word.Word[letter])
 					{
 						return false;
 					}
@@ -579,7 +581,12 @@ namespace SiriusCodeCracker
 				}
 				for (int letter = 0; letter < word.Length; letter++)
 				{
-					CrackerData.CharacterGrid[column + letter, row].Letter = word.Word[letter];
+					CrackerData.CharacterGrid[column + letter, row].CorrectLetter = word.Word[letter];
+
+					if(!CrackerData.LettersUsed.Contains(word.Word[letter]))
+					{
+						CrackerData.LettersUsed.Add(word.Word[letter]);
+					}
 
 					if (row > 0)
 					{
@@ -609,7 +616,11 @@ namespace SiriusCodeCracker
 				}
 				for (int letter = 0; letter < word.Length; letter++)
 				{
-					CrackerData.CharacterGrid[column, row + letter].Letter = word.Word[letter];
+					CrackerData.CharacterGrid[column, row + letter].CorrectLetter = word.Word[letter];
+					if(!CrackerData.LettersUsed.Contains(word.Word[letter]))
+					{
+						CrackerData.LettersUsed.Add(word.Word[letter]);
+					}
 
 					if (column > 0)
 					{

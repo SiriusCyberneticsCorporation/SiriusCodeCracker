@@ -15,7 +15,7 @@ namespace SiriusCodeCracker
 			Unusable,
 			Letter
 		}
-
+		/*
 		public enum CellVisualState
 		{
 			Empty,
@@ -23,7 +23,7 @@ namespace SiriusCodeCracker
 			Selected,
 			Highlighted
 		}
-
+		*/
 		public enum CellGameState
 		{
 			Empty,

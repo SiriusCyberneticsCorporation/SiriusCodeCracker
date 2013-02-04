@@ -13,11 +13,15 @@ namespace SiriusCodeCracker
 			Column = column;
 			Row = row;
 			Horizontal = horizontal;
+			Correct = false;
+			Complete = false;
 		}
 
-		public string Word;
-		public bool Horizontal;
-		public int Column;
 		public int Row;
+		public int Column;
+		public bool Horizontal;
+		public bool Correct;
+		public bool Complete;
+		public string Word;
 	}
 }

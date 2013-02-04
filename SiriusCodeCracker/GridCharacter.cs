@@ -7,14 +7,21 @@ namespace SiriusCodeCracker
 {
 	public class GridCharacter
 	{
+		public static char NO_LETTER = (char)0;
+
 		public int LetterNumber()
 		{
-			return m_letter - 65;
+			return m_correctLetter - 65;
 		}
 
 		public bool IsLetter()
 		{
 			return m_charcterState == Enumerations.CellCharacterState.Letter;
+		}
+
+		public bool IsGameLetter()
+		{
+			return m_gameState == Enumerations.CellGameState.Letter;
 		}
 
 		public bool IsGiven()
@@ -61,24 +68,43 @@ namespace SiriusCodeCracker
 		public void SetAsGiven()
 		{
 			m_gameState = Enumerations.CellGameState.Given;
+			m_selectedLetter = m_correctLetter;
 		}
 
-		public char Letter 
-		{ 
-			get { return m_letter; }
-			set 
-			{ 
-				m_letter = char.ToUpper(value);
+		public char CorrectLetter
+		{
+			get { return m_correctLetter; }
+			set
+			{
+				m_correctLetter = char.ToUpper(value);
 				m_charcterState = Enumerations.CellCharacterState.Letter;
 			}
 		}
+
+		public char SelectedLetter
+		{
+			get { return m_selectedLetter; }
+			set
+			{
+				m_selectedLetter = char.ToUpper(value);
+				m_gameState = Enumerations.CellGameState.Letter;
+			}
+		}
+
+		public void ResetSelection()
+		{
+			m_selectedLetter = NO_LETTER;
+			m_gameState = Enumerations.CellGameState.Number;
+		}
+	
+		public bool Selected { get { return m_selected; } set { m_selected = value; } }
 		public Enumerations.CellCharacterState CharcterState { get { return m_charcterState; } }
-		public Enumerations.CellVisualState VisualState { get { return m_visualState; } }
 		public Enumerations.CellGameState GameState { get { return m_gameState; } }
 
-		private char m_letter;
+		private char m_correctLetter;
+		private char m_selectedLetter;
+		private bool m_selected = false;
 		private Enumerations.CellCharacterState m_charcterState = Enumerations.CellCharacterState.Empty;
-		private Enumerations.CellVisualState m_visualState = Enumerations.CellVisualState.Empty;
 		private Enumerations.CellGameState m_gameState = Enumerations.CellGameState.Number;
 	}
 }

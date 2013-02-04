@@ -11,6 +11,9 @@ namespace SiriusCodeCracker
 {
 	public partial class KeyBoardUserControl : UserControl
 	{
+		public delegate void LetterSelectedHandler();
+		public event LetterSelectedHandler LetterSelected;
+
 		bool m_resized = true;
 		Font m_keyLetterFont;
 		Font m_letterFont;
@@ -71,33 +74,7 @@ namespace SiriusCodeCracker
 			m_centreFormat.LineAlignment = StringAlignment.Center;
 			m_centreFormat.Alignment = StringAlignment.Center;
 		}
-		/*
-		public void ResetKeyboard()
-		{
-			foreach (char letter in CrackerData.KeyboardLookup.Keys)
-			{
-				CrackerData.KeyboardLookup[letter].Used = false;
-				CrackerData.KeyboardLookup[letter].Given = false;
-				CrackerData.KeyboardLookup[letter].Selected = false;
-			}
-		}
 		
-		public void MarkAsGiven(char letter)
-		{
-			if (CrackerData.KeyboardLookup.ContainsKey(letter))
-			{
-				CrackerData.KeyboardLookup[letter].Given = true;
-			}
-		}
-
-		public void MarkAsUsed(char letter)
-		{
-			if (CrackerData.KeyboardLookup.ContainsKey(letter))
-			{
-				CrackerData.KeyboardLookup[letter].Used = true;
-			}
-		}
-		*/
 		private void KeyBoardUserControl_Paint(object sender, PaintEventArgs e)
 		{
 			float keyWidth = (float)this.Width / (float)10.0f;
@@ -113,7 +90,7 @@ namespace SiriusCodeCracker
 													new SizeF(keyWidth * 0.95f, keyHeight * 0.95f));
 				m_numberFont = Tools.FindBestFitFont(e.Graphics, "W",
 													new System.Drawing.Font(FontFamily.GenericSansSerif, keyHeight, FontStyle.Bold),
-													new SizeF(keyWidth * 0.7f, keyHeight * 0.7f));
+													new SizeF(keyWidth * 0.5f, keyHeight * 0.5f));
 
 				m_resized = false;
 			}
@@ -150,26 +127,43 @@ namespace SiriusCodeCracker
 
 		private void DrawKey(KeyboardCharacter key, Graphics g, float keyX, float keyY, float keyWidth, float keyHeight)
 		{
-			if (key.Given)
-			{
-				RectangleF letterCell = new RectangleF(keyX, keyY, keyWidth * 0.9f, keyHeight * 0.9f);
-				RectangleF numberCell = new RectangleF(keyX + (keyWidth * 0.5f), keyY + (keyHeight * 0.35f), keyWidth * 0.55f, keyHeight * 0.65f);
+			bool highlighted = false;
+			RectangleF keyCell = new RectangleF(keyX, keyY, keyWidth, keyHeight);
+			RectangleF letterCell = new RectangleF(keyX, keyY, keyWidth * 0.9f, keyHeight * 0.9f);
+			RectangleF numberCell = new RectangleF(keyX + (keyWidth * 0.55f), keyY + (keyHeight * 0.4f), keyWidth * 0.35f, keyHeight * 0.45f);
 
+			if (CrackerData.SelectedCharacter != null)
+			{
+				if (key.Letter == CrackerData.SelectedCharacter.SelectedLetter)
+				{
+					highlighted = true;
+				}
+			}
+
+			if (key.NotRequired)
+			{
+				Tools.DrawRoundedRectangle(g, keyCell, Pens.DarkGray, Color.LightGray);
+
+				keyCell.Inflate(-0.2f, -0.2f);
+				keyCell.Y += keyCell.Height * 0.05f;
+				g.DrawString(key.Letter.ToString(), m_keyLetterFont, Brushes.DarkGray, keyCell, m_centreFormat);
+			}
+			else if (key.Given)
+			{
+				if (highlighted)
+				{
+					g.FillRectangle(CrackerData.Configuration.HighlightBrush, keyCell);
+				}
 				g.DrawString(key.Letter.ToString(), m_letterFont, CrackerData.Configuration.GivenBrush, letterCell, m_centreFormat);
-				g.DrawString(CrackerData.GetNumber(key.Letter).ToString(), m_numberFont, CrackerData.Configuration.GivenBrush, numberCell, m_centreFormat);
+				g.DrawString(key.Number.ToString(), m_numberFont, CrackerData.Configuration.GivenBrush, numberCell, m_centreFormat);
 			}
 			else if (key.Used)
 			{
-				RectangleF letterCell = new RectangleF(keyX, keyY, keyWidth * 0.9f, keyHeight * 0.9f);
-				RectangleF numberCell = new RectangleF(keyX + (keyWidth * 0.5f), keyY + (keyHeight * 0.35f), keyWidth * 0.55f, keyHeight * 0.65f);
-
 				g.DrawString(key.Letter.ToString(), m_letterFont, CrackerData.Configuration.UsedLetterBrush, letterCell, m_centreFormat);
-				g.DrawString(CrackerData.GetNumber(key.Letter).ToString(), m_numberFont, CrackerData.Configuration.UsedLetterBrush, numberCell, m_centreFormat);
+				g.DrawString(key.Number.ToString(), m_numberFont, CrackerData.Configuration.UsedLetterBrush, numberCell, m_centreFormat);
 			}
 			else
 			{
-				RectangleF keyCell = new RectangleF(keyX, keyY, keyWidth, keyHeight);
-
 				Tools.DrawRoundedRectangle(g, keyCell, CrackerData.Configuration.GridPen, CrackerData.Configuration.BackgroundColour);
 
 				keyCell.Inflate(-0.2f, -0.2f);
@@ -183,5 +177,148 @@ namespace SiriusCodeCracker
 			m_resized = true;
 			this.Refresh();
 		}
+
+		private void KeyBoardUserControl_MouseClick(object sender, MouseEventArgs e)
+		{
+			bool deletePressed = false;
+			KeyboardCharacter selectedKey = null;
+			float keyWidth = (float)this.Width / (float)10.0f;
+			float keyHeight = (float)this.Height / 3.0f;
+
+			int columnSelected = -1;
+			int rowSelected = (int)(e.Y / keyHeight);
+
+			switch (rowSelected)
+			{
+				case 0:
+					columnSelected = (int)(e.X / keyWidth);
+					break;
+				case 1:
+					{
+						float shiftedX = e.X - (keyWidth / 2);
+						if (shiftedX >= 0)
+						{
+							columnSelected = (int)(shiftedX / keyWidth);
+							if (columnSelected > 8)
+							{
+								columnSelected = -1;
+							}
+						}
+					}
+					break;
+				case 2:
+					{
+						float shiftedX = e.X - (keyWidth * 1.5f);
+						if (shiftedX >= 0)
+						{
+							columnSelected = (int)(shiftedX / keyWidth);
+							if (columnSelected > 6)
+							{
+								deletePressed = true;
+								columnSelected = -1;
+							}
+							else
+							{
+								// Skip the delete keys.
+								columnSelected += 1;
+							}
+						}
+						else
+						{
+							deletePressed = true;
+						}
+					}
+					break;
+			}
+
+			if (columnSelected >= 0)
+			{
+				selectedKey = CrackerData.Keyboard[rowSelected, columnSelected];
+			}
+
+			ProcessKey(selectedKey, deletePressed);
+		}
+
+		public void HandleKeyPress(Keys keyPressed)
+		{
+			bool deletePressed = false;
+			KeyboardCharacter selectedKey = null;
+
+			if (keyPressed == Keys.Back || keyPressed == Keys.Delete)
+			{
+				deletePressed = true;
+			}
+			else if (keyPressed >= Keys.A && keyPressed <= Keys.Z &&
+					CrackerData.KeyboardLookup.ContainsKey(char.ToUpper((char)keyPressed)))
+			{
+				selectedKey = CrackerData.KeyboardLookup[char.ToUpper((char)keyPressed)];
+			}
+
+			ProcessKey(selectedKey, deletePressed);
+		}
+
+		private void ProcessKey(KeyboardCharacter selectedKey, bool deletePressed)
+		{
+			if (CrackerData.SelectedCharacter != null)
+			{
+				if (CrackerData.SelectedCharacter.IsGiven())
+				{
+					MessageBox.Show("You cannot change letters that were provided to you at the beginning of the game.", "Unable to change");
+				}
+				else if (deletePressed)
+				{
+					if (CrackerData.SelectedCharacter.SelectedLetter != GridCharacter.NO_LETTER)
+					{
+						CrackerData.MarkKeyboardLetterUnused(CrackerData.SelectedCharacter.SelectedLetter);
+						CrackerData.UnassignLetter(CrackerData.SelectedCharacter.SelectedLetter);
+						if (LetterSelected != null)
+						{
+							LetterSelected();
+						}
+					}
+				}
+				else if (selectedKey != null && !selectedKey.Given && !selectedKey.NotRequired)
+				{
+					if (selectedKey.Used && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
+					{
+						if (MessageBox.Show(string.Format("The letter '{0}' is already used. Do you wish to move it to the new location?",
+															selectedKey.Letter),
+											"Move Letter", MessageBoxButtons.YesNo) == DialogResult.Yes)
+						{
+							CrackerData.UnassignLetter(selectedKey.Letter);
+							CrackerData.AssignLetter(selectedKey.Letter);
+							if (LetterSelected != null)
+							{
+								LetterSelected();
+							}
+						}
+					}
+					else if (CrackerData.SelectedCharacter.IsGameLetter() && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
+					{
+						if (MessageBox.Show(string.Format("Do you wish to change the letter from '{0}' to '{1}'?",
+															CrackerData.SelectedCharacter.SelectedLetter,
+															selectedKey.Letter),
+											"Change Letter", MessageBoxButtons.YesNo) == DialogResult.Yes)
+						{
+							CrackerData.MarkKeyboardLetterUnused(CrackerData.SelectedCharacter.SelectedLetter);
+							CrackerData.AssignLetter(selectedKey.Letter);
+							if (LetterSelected != null)
+							{
+								LetterSelected();
+							}
+						}
+					}
+					else if (!selectedKey.Used)
+					{
+						CrackerData.AssignLetter(selectedKey.Letter);
+						if (LetterSelected != null)
+						{
+							LetterSelected();
+						}
+					}
+				}
+			}
+		}
+
 	}
 }

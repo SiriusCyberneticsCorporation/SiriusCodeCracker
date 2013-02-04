@@ -12,7 +12,11 @@ namespace SiriusCodeCracker
 		public static List<CodeWord> GridWords { get { return m_gridWords; } }
 		public static KeyboardCharacter[,] Keyboard { get { return m_keyboardRows; } }
 		public static Dictionary<char, KeyboardCharacter> KeyboardLookup { get { return m_keyboardLetterLookup; } }
+		public static GridCharacter SelectedCharacter { get { return m_selectedCharacter; } }
+		public static List<char> LettersUsed { get { return m_lettersUsed; } }
 
+		private static System.Drawing.Point m_selectedCell = new System.Drawing.Point(-1,-1);
+		private static GridCharacter m_selectedCharacter = null;
 		private static SiriusCodeCrackerConfiguration m_configuration = new SiriusCodeCrackerConfiguration();
 		private static GridCharacter[,] m_characterGrid = null;
 		private static List<CodeWord> m_gridWords = new List<CodeWord>();
@@ -21,6 +25,56 @@ namespace SiriusCodeCracker
 		private static Random m_randomiser = new Random(DateTime.Now.Millisecond);
 		private static KeyboardCharacter[,] m_keyboardRows = new KeyboardCharacter[3,10];
 		private static Dictionary<char, KeyboardCharacter> m_keyboardLetterLookup = new Dictionary<char, KeyboardCharacter>();
+		private static List<char> m_lettersUsed = new List<char>();
+
+
+		public static bool CheckCompletion()
+		{
+			int letterCount = 0;
+			bool result = true;
+
+			foreach (CodeWord gridWord in m_gridWords)
+			{
+				letterCount = 0;
+				if (gridWord.Horizontal)
+				{
+					gridWord.Correct = true;
+					for (int column = gridWord.Column; column < gridWord.Column + gridWord.Word.Length; column++)
+					{
+						if (m_characterGrid[column, gridWord.Row].SelectedLetter != gridWord.Word[column - gridWord.Column])
+						{
+							gridWord.Correct = false;
+							result = false;
+						}
+						if (m_characterGrid[column, gridWord.Row].SelectedLetter != GridCharacter.NO_LETTER)
+						{
+							letterCount++;
+						}
+					}
+				}
+				else
+				{
+					gridWord.Correct = true;
+					for (int row = gridWord.Row; row < gridWord.Row + gridWord.Word.Length; row++)
+					{
+						if (m_characterGrid[gridWord.Column, row].SelectedLetter != gridWord.Word[row - gridWord.Row])
+						{
+							gridWord.Correct = false;
+							result = false;
+						}
+						if (m_characterGrid[gridWord.Column, row].SelectedLetter != GridCharacter.NO_LETTER)
+						{
+							letterCount++;
+						}
+					}
+				}
+				gridWord.Complete = (letterCount == gridWord.Word.Length);
+			}
+
+			return result;
+		}
+
+
 
 		public static int GetNumber(char letter)
 		{
@@ -42,7 +96,7 @@ namespace SiriusCodeCracker
 			}
 			else
 			{
-				return (char)0;
+				return GridCharacter.NO_LETTER;
 			}
 		}
 
@@ -52,7 +106,7 @@ namespace SiriusCodeCracker
 			{
 				for (int row = 0; row < m_configuration.Rows; row++)
 				{
-					if (m_characterGrid[column, row].Letter == letter)
+					if (m_characterGrid[column, row].CorrectLetter == letter)
 					{
 						m_characterGrid[column, row].SetAsGiven();
 					}
@@ -61,35 +115,97 @@ namespace SiriusCodeCracker
 			if (m_keyboardLetterLookup.ContainsKey(letter))
 			{
 				m_keyboardLetterLookup[letter].Given = true;
+				m_keyboardLetterLookup[letter].Number = GetNumber(letter);
 			}
 		}
 
-		private static void MarkLetterAsUsed(char letter)
+		public static void UnassignLetter(char letter)
+		{
+			if (m_selectedCharacter != null)
+			{
+				for (int column = 0; column < m_configuration.Columns; column++)
+				{
+					for (int row = 0; row < m_configuration.Rows; row++)
+					{
+						if (m_characterGrid[column, row].SelectedLetter == letter)
+						{
+							m_characterGrid[column, row].ResetSelection(); ;
+						}
+					}
+				}
+			}
+		}
+
+		public static void AssignLetter(char letter)
+		{
+			if (m_selectedCharacter != null)
+			{
+				for (int column = 0; column < m_configuration.Columns; column++)
+				{
+					for (int row = 0; row < m_configuration.Rows; row++)
+					{
+						if (m_characterGrid[column, row].CorrectLetter == m_selectedCharacter.CorrectLetter)
+						{
+							m_characterGrid[column, row].SelectedLetter = letter;
+						}
+					}
+				}
+
+				if (m_keyboardLetterLookup.ContainsKey(letter))
+				{
+					m_keyboardLetterLookup[letter].Used = true;
+					m_keyboardLetterLookup[letter].Number = GetNumber(SelectedCharacter.CorrectLetter);
+				}
+			}
+		}
+
+		public static void MarkKeyboardLetterUnused(char letter)
 		{
 			if (m_keyboardLetterLookup.ContainsKey(letter))
 			{
-				m_keyboardLetterLookup[letter].Used = true;
+				m_keyboardLetterLookup[letter].Used = false;
+				m_keyboardLetterLookup[letter].Number = -1;
 			}
 		}
 
-		public static void AssignGivenLetters(int numberOfLetters, bool grouped)
+		public static void AssignGivenLetters()
 		{
 			int random = 0;
 
+			List<char> lettersOfUnusedLetters = new List<char>();
+
+			// Start by filling the list with the alphabet.
+			for (char letter = 'A'; letter <= 'Z'; letter++)
+			{
+				lettersOfUnusedLetters.Add(letter);
+			}
+
+			// Now remove all of the ones we have used.
+			foreach (char letter in m_lettersUsed)
+			{
+				lettersOfUnusedLetters.Remove(letter);
+			}
+
+			// What is left is the list of un-used letters.
+			foreach (char letter in lettersOfUnusedLetters)
+			{
+				m_keyboardLetterLookup[letter].NotRequired = true;
+			}
+
 			// For grouped number assignments we select a word at random from the assigned list
 			// and then choose the required number of consecutive letters.
-			if (grouped)
+			if (m_configuration.GivenLettersGrouped)
 			{
 				while (true)
 				{
 					random = m_randomiser.Next(0, m_gridWords.Count - 1);
 
-					if (m_gridWords[random].Word.Length > numberOfLetters + 2)
+					if (m_gridWords[random].Word.Length > m_configuration.GivenLetters + 2)
 					{
 						string selectedWord = m_gridWords[random].Word;
-						int start = m_randomiser.Next(0, selectedWord.Length - numberOfLetters - 1);
+						int start = m_randomiser.Next(0, selectedWord.Length - m_configuration.GivenLetters - 1);
 
-						for (int index = start; index < Math.Min(start + numberOfLetters, selectedWord.Length); index++)
+						for (int index = start; index < Math.Min(start + m_configuration.GivenLetters, selectedWord.Length); index++)
 						{
 							MarkLetterAsGiven(selectedWord[index]);
 						}
@@ -99,17 +215,55 @@ namespace SiriusCodeCracker
 			}
 			else
 			{
+				List<char> alphabet = new List<char>();
 
-				List<int> numbers = new List<int>();
-
-				// Set up a list of numbers 1..26.
-				for (int i = 1; i < 27; i++)
+				// Start by setting up the alphabet.
+				for (char letter = 'A'; letter <= 'Z'; letter++)
 				{
-					numbers.Add(i);
+					alphabet.Add(letter);
+				}
+
+				// now select the given letters.
+				for (int i = 0; i < m_configuration.GivenLetters; i++)
+				{
+					// Select a letter from the alphabet.
+					char letter = alphabet[m_randomiser.Next(0, alphabet.Count)];
+					// Remove the letter so that it cannot be selected again.
+					alphabet.Remove(letter);
+
+					// While the selected letter in not one of the used ones, repeat the action.
+					while (!m_lettersUsed.Contains(letter))
+					{
+						// Select another random letter.
+						letter = alphabet[m_randomiser.Next(0, alphabet.Count)];
+						// Remove the letter so that it cannot be selected again.
+						alphabet.Remove(letter);
+					}
+					MarkLetterAsGiven(letter);
 				}
 			}
+		}
 
-			//m_characterGrid			
+		public static void SelectCell(int column, int row)
+		{
+			if (m_characterGrid != null)
+			{
+				if (m_selectedCell.X >= 0 && m_selectedCell.Y >= 0)
+				{
+					m_characterGrid[m_selectedCell.X, m_selectedCell.Y].Selected = false;
+					m_selectedCharacter = null;
+				}
+				if (column < m_configuration.Columns && row < m_configuration.Rows)
+				{
+					if (m_characterGrid[column, row].IsLetter())
+					{
+						m_selectedCell.X = column;
+						m_selectedCell.Y = row;
+						m_characterGrid[m_selectedCell.X, m_selectedCell.Y].Selected = true;
+						m_selectedCharacter = m_characterGrid[m_selectedCell.X, m_selectedCell.Y];
+					}
+				}
+			}
 		}
 
 		public static int NextRandom(int min, int max)
@@ -156,11 +310,8 @@ namespace SiriusCodeCracker
 			m_characterGrid = null;
 		}
 
-		public static void SetGridSize(int numberOfRows, int numberOfColumns)
+		public static void ResetGrid()
 		{
-			m_configuration.Columns = numberOfColumns;
-			m_configuration.Rows = numberOfRows;
-
 			GridWords.Clear();
 			RandomiseLetters();
 
@@ -175,11 +326,13 @@ namespace SiriusCodeCracker
 				}
 			}
 
-			foreach (char letter in CrackerData.KeyboardLookup.Keys)
+			foreach (char letter in m_keyboardLetterLookup.Keys)
 			{
-				CrackerData.KeyboardLookup[letter].Used = false;
-				CrackerData.KeyboardLookup[letter].Given = false;
-				CrackerData.KeyboardLookup[letter].Selected = false;
+				m_keyboardLetterLookup[letter].Number = -1;
+				m_keyboardLetterLookup[letter].Used = false;
+				m_keyboardLetterLookup[letter].Given = false;
+				m_keyboardLetterLookup[letter].Selected = false;
+				m_keyboardLetterLookup[letter].NotRequired = false;
 			}
 		}
 
