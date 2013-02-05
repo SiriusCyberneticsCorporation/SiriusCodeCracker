@@ -38,6 +38,7 @@
 			this.Name = "KeyBoardUserControl";
 			this.Size = new System.Drawing.Size(720, 150);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.KeyBoardUserControl_Paint);
+			this.Enter += new System.EventHandler(this.KeyBoardUserControl_Enter);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.KeyBoardUserControl_MouseClick);
 			this.Resize += new System.EventHandler(this.KeyBoardUserControl_Resize);
 			this.ResumeLayout(false);

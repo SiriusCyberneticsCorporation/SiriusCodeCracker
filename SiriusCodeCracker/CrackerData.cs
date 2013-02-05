@@ -3,6 +3,9 @@ using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
 
+using System.IO;
+using System.Xml.Serialization;
+
 namespace SiriusCodeCracker
 {
 	public class CrackerData
@@ -15,6 +18,11 @@ namespace SiriusCodeCracker
 		public static GridCharacter SelectedCharacter { get { return m_selectedCharacter; } }
 		public static List<char> LettersUsed { get { return m_lettersUsed; } }
 
+		public static int Corrections = 0;
+		public static int GivenLetters = 0;
+		public static Nullable<TimeSpan> GameDuration = null;
+		public static DateTime StartTime = DateTime.MinValue;
+
 		private static System.Drawing.Point m_selectedCell = new System.Drawing.Point(-1,-1);
 		private static GridCharacter m_selectedCharacter = null;
 		private static SiriusCodeCrackerConfiguration m_configuration = new SiriusCodeCrackerConfiguration();
@@ -26,6 +34,7 @@ namespace SiriusCodeCracker
 		private static KeyboardCharacter[,] m_keyboardRows = new KeyboardCharacter[3,10];
 		private static Dictionary<char, KeyboardCharacter> m_keyboardLetterLookup = new Dictionary<char, KeyboardCharacter>();
 		private static List<char> m_lettersUsed = new List<char>();
+
 
 
 		public static bool CheckCompletion()
@@ -71,6 +80,21 @@ namespace SiriusCodeCracker
 				gridWord.Complete = (letterCount == gridWord.Word.Length);
 			}
 
+			if (result && GameDuration == null)
+			{
+				GameDuration = DateTime.Now.Subtract(StartTime);
+
+				File.AppendAllText("Statistics.txt",
+									string.Format("{0} - {1}x{2} grid completed in {3}:{4}:{5} with {6} corrections and {7} given letters.\r\n",
+												DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"),
+												m_configuration.Columns,
+												m_configuration.Rows,
+												GameDuration.Value.Hours.ToString("00"),
+												GameDuration.Value.Minutes.ToString("00"),
+												GameDuration.Value.Seconds.ToString("00"),
+												Corrections,
+												GivenLetters));
+			}
 			return result;
 		}
 
@@ -102,6 +126,8 @@ namespace SiriusCodeCracker
 
 		private static void MarkLetterAsGiven(char letter)
 		{
+			GivenLetters++;
+
 			for (int column = 0; column < m_configuration.Columns; column++)
 			{
 				for (int row = 0; row < m_configuration.Rows; row++)
@@ -129,6 +155,7 @@ namespace SiriusCodeCracker
 					{
 						if (m_characterGrid[column, row].SelectedLetter == letter)
 						{
+							Corrections++;
 							m_characterGrid[column, row].ResetSelection(); ;
 						}
 					}
@@ -163,9 +190,40 @@ namespace SiriusCodeCracker
 		{
 			if (m_keyboardLetterLookup.ContainsKey(letter))
 			{
+				Corrections++;
 				m_keyboardLetterLookup[letter].Used = false;
 				m_keyboardLetterLookup[letter].Number = -1;
 			}
+		}
+
+		public static void ProvideExtraLetter()
+		{
+			char letter;
+			List<char> alphabet = new List<char>();
+
+			// Start by setting up the alphabet.
+			for (letter = 'A'; letter <= 'Z'; letter++)
+			{
+				if (!m_keyboardLetterLookup[letter].Given)
+				{
+					alphabet.Add(letter);
+				}
+			}
+
+			// Select a letter from the alphabet.
+			letter = alphabet[m_randomiser.Next(0, alphabet.Count)];
+			// Remove the letter so that it cannot be selected again.
+			alphabet.Remove(letter);
+
+			// While the selected letter in not one of the used ones, repeat the action.
+			while (!m_lettersUsed.Contains(letter))
+			{
+				// Select another random letter.
+				letter = alphabet[m_randomiser.Next(0, alphabet.Count)];
+				// Remove the letter so that it cannot be selected again.
+				alphabet.Remove(letter);
+			}
+			MarkLetterAsGiven(letter);
 		}
 
 		public static void AssignGivenLetters()
@@ -315,6 +373,11 @@ namespace SiriusCodeCracker
 			GridWords.Clear();
 			RandomiseLetters();
 
+			Corrections = 0;
+			GivenLetters = 0;
+			GameDuration = null;
+			StartTime = DateTime.Now;
+
 			m_characterGrid = null;
 			m_characterGrid = new GridCharacter[m_configuration.Columns, m_configuration.Rows];
 
@@ -335,6 +398,5 @@ namespace SiriusCodeCracker
 				m_keyboardLetterLookup[letter].NotRequired = false;
 			}
 		}
-
 	}
 }

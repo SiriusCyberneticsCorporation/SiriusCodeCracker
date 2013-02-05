@@ -39,6 +39,7 @@
 			this.Name = "GridDisplayUserControl";
 			this.Size = new System.Drawing.Size(738, 559);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.GridDisplayUserControl_Paint);
+			this.Enter += new System.EventHandler(this.GridDisplayUserControl_Enter);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GridDisplayUserControl_MouseClick);
 			this.Resize += new System.EventHandler(this.GridDisplayUserControl_Resize);
 			this.ResumeLayout(false);

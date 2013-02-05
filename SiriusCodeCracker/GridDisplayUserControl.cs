@@ -164,5 +164,10 @@ namespace SiriusCodeCracker
 				CellSelected();
 			}
 		}
+
+		private void GridDisplayUserControl_Enter(object sender, EventArgs e)
+		{
+			Refresh();
+		}
 	}
 }

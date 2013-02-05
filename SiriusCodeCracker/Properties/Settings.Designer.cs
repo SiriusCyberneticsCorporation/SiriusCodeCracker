@@ -8,23 +8,187 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SiriusCodeCracker.Properties
-{
-
-
-	[global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
-	internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-	{
-
-		private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-		public static Settings Default
-		{
-			get
-			{
-				return defaultInstance;
-			}
-		}
-	}
+namespace SiriusCodeCracker.Properties {
+    
+    
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("18")]
+        public int Columns {
+            get {
+                return ((int)(this["Columns"]));
+            }
+            set {
+                this["Columns"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("18")]
+        public int Rows {
+            get {
+                return ((int)(this["Rows"]));
+            }
+            set {
+                this["Rows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int GivenLetters {
+            get {
+                return ((int)(this["GivenLetters"]));
+            }
+            set {
+                this["GivenLetters"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GivenLettersGrouped {
+            get {
+                return ((bool)(this["GivenLettersGrouped"]));
+            }
+            set {
+                this["GivenLettersGrouped"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowAllErrors {
+            get {
+                return ((bool)(this["ShowAllErrors"]));
+            }
+            set {
+                this["ShowAllErrors"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowIncorrectWords {
+            get {
+                return ((bool)(this["ShowIncorrectWords"]));
+            }
+            set {
+                this["ShowIncorrectWords"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color BackgroundColour {
+            get {
+                return ((global::System.Drawing.Color)(this["BackgroundColour"]));
+            }
+            set {
+                this["BackgroundColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color LetterColour {
+            get {
+                return ((global::System.Drawing.Color)(this["LetterColour"]));
+            }
+            set {
+                this["LetterColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DimGray")]
+        public global::System.Drawing.Color UsedLetter {
+            get {
+                return ((global::System.Drawing.Color)(this["UsedLetter"]));
+            }
+            set {
+                this["UsedLetter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color GridColour {
+            get {
+                return ((global::System.Drawing.Color)(this["GridColour"]));
+            }
+            set {
+                this["GridColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color NumberColour {
+            get {
+                return ((global::System.Drawing.Color)(this["NumberColour"]));
+            }
+            set {
+                this["NumberColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RoyalBlue")]
+        public global::System.Drawing.Color GivenColour {
+            get {
+                return ((global::System.Drawing.Color)(this["GivenColour"]));
+            }
+            set {
+                this["GivenColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CornflowerBlue")]
+        public global::System.Drawing.Color HighlightColour {
+            get {
+                return ((global::System.Drawing.Color)(this["HighlightColour"]));
+            }
+            set {
+                this["HighlightColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Pink")]
+        public global::System.Drawing.Color ErrorColour {
+            get {
+                return ((global::System.Drawing.Color)(this["ErrorColour"]));
+            }
+            set {
+                this["ErrorColour"] = value;
+            }
+        }
+    }
 }

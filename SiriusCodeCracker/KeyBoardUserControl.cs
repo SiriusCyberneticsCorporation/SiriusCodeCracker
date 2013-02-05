@@ -45,7 +45,7 @@ namespace SiriusCodeCracker
 			CrackerData.Keyboard[1, 7] = new KeyboardCharacter('K');
 			CrackerData.Keyboard[1, 8] = new KeyboardCharacter('L');
 
-			CrackerData.Keyboard[2, 0] = new KeyboardCharacter('-');
+			CrackerData.Keyboard[2, 0] = new KeyboardCharacter('<');
 			CrackerData.Keyboard[2, 1] = new KeyboardCharacter('Z');
 			CrackerData.Keyboard[2, 2] = new KeyboardCharacter('X');
 			CrackerData.Keyboard[2, 3] = new KeyboardCharacter('C');
@@ -53,22 +53,30 @@ namespace SiriusCodeCracker
 			CrackerData.Keyboard[2, 5] = new KeyboardCharacter('B');
 			CrackerData.Keyboard[2, 6] = new KeyboardCharacter('N');
 			CrackerData.Keyboard[2, 7] = new KeyboardCharacter('M');
-			CrackerData.Keyboard[2, 8] = new KeyboardCharacter('-');
+			CrackerData.Keyboard[2, 8] = new KeyboardCharacter('>');
 
 			for (int keyNumber = 0; keyNumber < 10; keyNumber++)
 			{
-				CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[0, keyNumber].Letter, CrackerData.Keyboard[0, keyNumber]);
+				if (!CrackerData.KeyboardLookup.ContainsKey(CrackerData.Keyboard[0, keyNumber].Letter))
+				{
+					CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[0, keyNumber].Letter, CrackerData.Keyboard[0, keyNumber]);
+				}
 			}
 
 			for (int keyNumber = 0; keyNumber < 9; keyNumber++)
 			{
-				CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[1, keyNumber].Letter, CrackerData.Keyboard[1, keyNumber]);
+				if (!CrackerData.KeyboardLookup.ContainsKey(CrackerData.Keyboard[1, keyNumber].Letter))
+				{
+					CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[1, keyNumber].Letter, CrackerData.Keyboard[1, keyNumber]);
+				}
 			}
 
 			for (int keyNumber = 1; keyNumber < 8; keyNumber++)
 			{
-				CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[2, keyNumber].Letter, CrackerData.Keyboard[2, keyNumber]);
-
+				if (!CrackerData.KeyboardLookup.ContainsKey(CrackerData.Keyboard[2, keyNumber].Letter))
+				{
+					CrackerData.KeyboardLookup.Add(CrackerData.Keyboard[2, keyNumber].Letter, CrackerData.Keyboard[2, keyNumber]);
+				}
 			} 
 			m_centreFormat = new StringFormat();
 			m_centreFormat.LineAlignment = StringAlignment.Center;
@@ -95,7 +103,7 @@ namespace SiriusCodeCracker
 				m_resized = false;
 			}
 	
-			e.Graphics.Clear(Color.White);
+			e.Graphics.Clear(SystemColors.Control);//.White);
 
 			for (int keyNumber = 0; keyNumber < 10; keyNumber++)
 			{
@@ -168,7 +176,14 @@ namespace SiriusCodeCracker
 
 				keyCell.Inflate(-0.2f, -0.2f);
 				keyCell.Y += keyCell.Height * 0.05f;
-				g.DrawString(key.Letter.ToString(), m_keyLetterFont, CrackerData.Configuration.LetterBrush, keyCell, m_centreFormat);
+				if (key.Letter == '<' || key.Letter == '>')
+				{
+					g.DrawString("Delete", m_numberFont, CrackerData.Configuration.LetterBrush, keyCell, m_centreFormat);
+				}
+				else
+				{
+					g.DrawString(key.Letter.ToString(), m_keyLetterFont, CrackerData.Configuration.LetterBrush, keyCell, m_centreFormat);
+				}
 			}
 		}
 
@@ -318,6 +333,11 @@ namespace SiriusCodeCracker
 					}
 				}
 			}
+		}
+
+		private void KeyBoardUserControl_Enter(object sender, EventArgs e)
+		{
+			Refresh();
 		}
 
 	}

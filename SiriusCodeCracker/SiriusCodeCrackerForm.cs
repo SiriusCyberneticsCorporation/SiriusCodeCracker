@@ -28,7 +28,9 @@ namespace SiriusCodeCracker
 				CrosswordGrid.Refresh();
 				CodeCrackerKeyBoard.Refresh();
 
-				MessageBox.Show("Congratulations, you have unravelled the code", "Puzzle Complete");
+				CongratulationsForm iCongratulationsForm = new CongratulationsForm();
+				iCongratulationsForm.ShowDialog(this);
+				//MessageBox.Show("Congratulations, you have unravelled the code", "Puzzle Complete");
 			}
 			else
 			{
@@ -42,7 +44,7 @@ namespace SiriusCodeCracker
 			CodeCrackerKeyBoard.Refresh();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void StartNewGameButton_Click(object sender, EventArgs e)
 		{
 			m_crosswordGenerator.Populate();
 
@@ -50,15 +52,14 @@ namespace SiriusCodeCracker
 			CodeCrackerKeyBoard.Refresh();
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void SettingsButton_Click(object sender, EventArgs e)
 		{
 			CodeCrackerSettingsForm iCodeCrackerSettingsForm = new CodeCrackerSettingsForm();
 			
 			iCodeCrackerSettingsForm.ShowDialog(this);
-		}
 
-		private void SiriusCodeCrackerForm_KeyPress(object sender, KeyPressEventArgs e)
-		{
+			CrosswordGrid.Refresh();
+			CodeCrackerKeyBoard.Refresh();
 		}
 
 		private void SiriusCodeCrackerForm_KeyDown(object sender, KeyEventArgs e)
@@ -66,5 +67,26 @@ namespace SiriusCodeCracker
 			CodeCrackerKeyBoard.HandleKeyPress(e.KeyCode);
 		}
 
+		private void SiriusCodeCrackerForm_Resize(object sender, EventArgs e)
+		{
+			CrosswordGrid.Refresh();
+			CodeCrackerKeyBoard.Refresh();
+		}
+
+		private void ExtraLetterButton_Click(object sender, EventArgs e)
+		{
+			CrackerData.ProvideExtraLetter();
+			CrosswordGrid.Refresh();
+			CodeCrackerKeyBoard.Refresh();
+		}
+
+		private void StatisticsButton_Click(object sender, EventArgs e)
+		{
+			StatisticsForm iStatisticsForm = new StatisticsForm();
+
+			iStatisticsForm.ShowDialog(this);
+		}
+
+		
 	}
 }

@@ -36,14 +36,15 @@ namespace SiriusCodeCracker
 			int strokeOffset = Convert.ToInt32(Math.Ceiling(borderPen.Width));
 			bounds = RectangleF.Inflate(bounds, -strokeOffset, -strokeOffset);
 
-			//borderPen.EndCap = borderPen.StartCap = LineCap.Round;
-
 			GraphicsPath gfxPath = new GraphicsPath();
 			gfxPath.AddArc(bounds.X, bounds.Y, CornerRadius, CornerRadius, 180, 90);
 			gfxPath.AddArc(bounds.X + bounds.Width - CornerRadius, bounds.Y, CornerRadius, CornerRadius, 270, 90);
 			gfxPath.AddArc(bounds.X + bounds.Width - CornerRadius, bounds.Y + bounds.Height - CornerRadius, CornerRadius, CornerRadius, 0, 90);
 			gfxPath.AddArc(bounds.X, bounds.Y + bounds.Height - CornerRadius, CornerRadius, CornerRadius, 90, 90);
 			gfxPath.CloseAllFigures();
+
+//			Brush brGradient = new LinearGradientBrush(bounds, Color.Gray, Color.Silver, LinearGradientMode.Vertical);//, 45, false);		
+//			g.FillPath(brGradient, gfxPath);
 
 			g.FillPath(new SolidBrush(fillColour), gfxPath);
 			g.DrawPath(borderPen, gfxPath);
