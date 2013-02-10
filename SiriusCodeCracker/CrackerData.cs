@@ -84,11 +84,12 @@ namespace SiriusCodeCracker
 			{
 				GameDuration = DateTime.Now.Subtract(StartTime);
 
-				File.AppendAllText("Statistics.txt",
-									string.Format("{0} - {1}x{2} grid completed in {3}:{4}:{5} with {6} corrections and {7} given letters.\r\n",
+				File.AppendAllText("CodeCrackerStatistics.csv",
+									string.Format("{0},{1},{2},{3},{4}:{5}:{6},{7},{8}\r\n",
+												"Unknown User",
 												DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"),
-												m_configuration.Columns,
 												m_configuration.Rows,
+												m_configuration.Columns,
 												GameDuration.Value.Hours.ToString("00"),
 												GameDuration.Value.Minutes.ToString("00"),
 												GameDuration.Value.Seconds.ToString("00"),
@@ -124,7 +125,7 @@ namespace SiriusCodeCracker
 			}
 		}
 
-		private static void MarkLetterAsGiven(char letter)
+		private static void MarkLetterAsGiven(char letter, bool selectFirst = false)
 		{
 			GivenLetters++;
 
@@ -134,6 +135,11 @@ namespace SiriusCodeCracker
 				{
 					if (m_characterGrid[column, row].CorrectLetter == letter)
 					{
+						if (selectFirst)
+						{
+							selectFirst = false;
+							SelectCell(column, row);
+						}
 						m_characterGrid[column, row].SetAsGiven();
 					}
 				}
@@ -155,7 +161,6 @@ namespace SiriusCodeCracker
 					{
 						if (m_characterGrid[column, row].SelectedLetter == letter)
 						{
-							Corrections++;
 							m_characterGrid[column, row].ResetSelection(); ;
 						}
 					}
@@ -190,7 +195,6 @@ namespace SiriusCodeCracker
 		{
 			if (m_keyboardLetterLookup.ContainsKey(letter))
 			{
-				Corrections++;
 				m_keyboardLetterLookup[letter].Used = false;
 				m_keyboardLetterLookup[letter].Number = -1;
 			}
@@ -223,7 +227,7 @@ namespace SiriusCodeCracker
 				// Remove the letter so that it cannot be selected again.
 				alphabet.Remove(letter);
 			}
-			MarkLetterAsGiven(letter);
+			MarkLetterAsGiven(letter, true);
 		}
 
 		public static void AssignGivenLetters()
@@ -263,11 +267,16 @@ namespace SiriusCodeCracker
 						string selectedWord = m_gridWords[random].Word;
 						int start = m_randomiser.Next(0, selectedWord.Length - m_configuration.GivenLetters - 1);
 
-						for (int index = start; index < Math.Min(start + m_configuration.GivenLetters, selectedWord.Length); index++)
+						if (selectedWord[start] != selectedWord[start + 1] &&
+							selectedWord[start+1] != selectedWord[start + 2] &&
+							selectedWord[start] != selectedWord[start + 2])
 						{
-							MarkLetterAsGiven(selectedWord[index]);
+							for (int index = start; index < Math.Min(start + m_configuration.GivenLetters, selectedWord.Length); index++)
+							{
+								MarkLetterAsGiven(selectedWord[index]);
+							}
+							break;
 						}
-						break;
 					}
 				}
 			}
@@ -372,6 +381,8 @@ namespace SiriusCodeCracker
 		{
 			GridWords.Clear();
 			RandomiseLetters();
+
+			m_lettersUsed.Clear();
 
 			Corrections = 0;
 			GivenLetters = 0;

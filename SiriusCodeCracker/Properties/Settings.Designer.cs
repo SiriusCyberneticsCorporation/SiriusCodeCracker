@@ -157,7 +157,7 @@ namespace SiriusCodeCracker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("RoyalBlue")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
         public global::System.Drawing.Color GivenColour {
             get {
                 return ((global::System.Drawing.Color)(this["GivenColour"]));

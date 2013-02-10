@@ -23,7 +23,7 @@ namespace SiriusCodeCracker
 		int m_longestWord = 0;
 
 		Dictionary<int, List<GeneratorWord>> m_wordsByLength = new Dictionary<int, List<GeneratorWord>>();
-		Dictionary<int, List<GeneratorWord>>[,] m_characterPositions = new Dictionary<int, List<GeneratorWord>>[20, 26];
+		Dictionary<int, List<GeneratorWord>>[,] m_characterPositions = new Dictionary<int, List<GeneratorWord>>[30, 26];
 
 		public CrosswordGenerator()
 		{
@@ -202,6 +202,10 @@ namespace SiriusCodeCracker
 
 			if (horizontal)
 			{
+				if (startColumn >= CrackerData.Configuration.Columns-m_shortestWord)
+				{
+					return 0;
+				}
 				// If the cell immediately before this word has a letter in it then the cell is not useable.
 				if (startColumn > 0 && CrackerData.CharacterGrid[startColumn - 1, startRow].IsLetter())
 				{
@@ -286,6 +290,10 @@ namespace SiriusCodeCracker
 			}
 			else
 			{
+				if (startRow >= CrackerData.Configuration.Rows - m_shortestWord)
+				{
+					return 0;
+				}
 				// If the cell immediately before this word has a letter in it then the cell is not useable.
 				if (startRow > 0 && CrackerData.CharacterGrid[startColumn, startRow - 1].IsLetter())
 				{

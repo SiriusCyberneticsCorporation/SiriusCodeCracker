@@ -43,10 +43,18 @@ namespace SiriusCodeCracker
 			gfxPath.AddArc(bounds.X, bounds.Y + bounds.Height - CornerRadius, CornerRadius, CornerRadius, 90, 90);
 			gfxPath.CloseAllFigures();
 
-//			Brush brGradient = new LinearGradientBrush(bounds, Color.Gray, Color.Silver, LinearGradientMode.Vertical);//, 45, false);		
-//			g.FillPath(brGradient, gfxPath);
+			GraphicsPath gradientPath = new GraphicsPath();
+			gradientPath.AddEllipse(RectangleF.Inflate(bounds, bounds.Width/2, bounds.Height/2));
 
-			g.FillPath(new SolidBrush(fillColour), gfxPath);
+			PathGradientBrush gradientBrush = new PathGradientBrush(gradientPath);
+			gradientBrush.CenterPoint = new PointF(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
+			gradientBrush.CenterColor = Color.AliceBlue;
+			gradientBrush.SurroundColors = new Color[] { Color.DimGray };
+			g.FillPath(gradientBrush, gfxPath);
+
+			// Use the following line for plain buttons
+//			g.FillPath(new SolidBrush(fillColour), gfxPath);
+
 			g.DrawPath(borderPen, gfxPath);
 		}
 	}

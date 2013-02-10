@@ -17,6 +17,11 @@ namespace SiriusCodeCracker
 		public GridDisplayUserControl()
 		{
 			InitializeComponent();
+
+			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+			SetStyle(ControlStyles.ResizeRedraw, true);
+			SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+			SetStyle(ControlStyles.UserPaint, true);
 		}
 
 		private void GridDisplayUserControl_Paint(object sender, PaintEventArgs e)
@@ -24,10 +29,10 @@ namespace SiriusCodeCracker
 			float columnWidth = (float)this.Width / (float)CrackerData.Configuration.Columns;
 			float rowHeight = (float)this.Height / (float)CrackerData.Configuration.Rows;
 
-			int left = e.ClipRectangle.Left;
-			int right = e.ClipRectangle.Right - 1;
-			int top = e.ClipRectangle.Top;
-			int bottom = e.ClipRectangle.Bottom - 1;
+			int left = this.ClientRectangle.Left;
+			int right = this.ClientRectangle.Right - 1;
+			int top = this.ClientRectangle.Top;
+			int bottom = this.ClientRectangle.Bottom - 1;
 			PointF topLeft = new PointF(left, top);
 			PointF topRight = new PointF(right, top);
 			PointF bottomLeft = new PointF(left, bottom);
@@ -141,12 +146,6 @@ namespace SiriusCodeCracker
 
 				e.Graphics.DrawLine(CrackerData.Configuration.GridPen, start, finish);
 			}
-		}
-
-
-		private void GridDisplayUserControl_Resize(object sender, EventArgs e)
-		{
-			this.Refresh();
 		}
 
 		private void GridDisplayUserControl_MouseClick(object sender, MouseEventArgs e)

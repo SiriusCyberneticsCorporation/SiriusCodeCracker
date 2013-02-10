@@ -36,7 +36,7 @@
       <Value Profile="(Default)">Black</Value>
     </Setting>
     <Setting Name="GivenColour" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">RoyalBlue</Value>
+      <Value Profile="(Default)">Blue</Value>
     </Setting>
     <Setting Name="HighlightColour" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">CornflowerBlue</Value>

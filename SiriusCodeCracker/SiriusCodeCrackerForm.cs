@@ -30,7 +30,8 @@ namespace SiriusCodeCracker
 
 				CongratulationsForm iCongratulationsForm = new CongratulationsForm();
 				iCongratulationsForm.ShowDialog(this);
-				//MessageBox.Show("Congratulations, you have unravelled the code", "Puzzle Complete");
+
+				WordDefinitionButton.Enabled = true;
 			}
 			else
 			{
@@ -46,6 +47,8 @@ namespace SiriusCodeCracker
 
 		private void StartNewGameButton_Click(object sender, EventArgs e)
 		{
+			WordDefinitionButton.Enabled = false;
+
 			m_crosswordGenerator.Populate();
 
 			CrosswordGrid.Refresh();
@@ -55,11 +58,13 @@ namespace SiriusCodeCracker
 		private void SettingsButton_Click(object sender, EventArgs e)
 		{
 			CodeCrackerSettingsForm iCodeCrackerSettingsForm = new CodeCrackerSettingsForm();
-			
-			iCodeCrackerSettingsForm.ShowDialog(this);
 
-			CrosswordGrid.Refresh();
-			CodeCrackerKeyBoard.Refresh();
+			if (iCodeCrackerSettingsForm.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+			{
+				CrackerData.ResetGrid();
+				CrosswordGrid.Refresh();
+				CodeCrackerKeyBoard.Refresh();
+			}
 		}
 
 		private void SiriusCodeCrackerForm_KeyDown(object sender, KeyEventArgs e)
@@ -85,6 +90,13 @@ namespace SiriusCodeCracker
 			StatisticsForm iStatisticsForm = new StatisticsForm();
 
 			iStatisticsForm.ShowDialog(this);
+		}
+
+		private void WordDefinitionButton_Click(object sender, EventArgs e)
+		{
+			WordDefinitionsForm iWordDefinitionsForm = new WordDefinitionsForm();
+
+			iWordDefinitionsForm.ShowDialog(this);
 		}
 
 		

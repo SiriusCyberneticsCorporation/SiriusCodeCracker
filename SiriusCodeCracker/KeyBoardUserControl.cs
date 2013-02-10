@@ -24,6 +24,11 @@ namespace SiriusCodeCracker
 		{
 			InitializeComponent();
 
+			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+			SetStyle(ControlStyles.ResizeRedraw, true);
+			SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+			SetStyle(ControlStyles.UserPaint, true);
+
 			CrackerData.Keyboard[0, 0] = new KeyboardCharacter('Q');
 			CrackerData.Keyboard[0, 1] = new KeyboardCharacter('W');
 			CrackerData.Keyboard[0, 2] = new KeyboardCharacter('E');
@@ -167,6 +172,10 @@ namespace SiriusCodeCracker
 			}
 			else if (key.Used)
 			{
+				if (highlighted)
+				{
+					g.FillRectangle(CrackerData.Configuration.HighlightBrush, keyCell);
+				}
 				g.DrawString(key.Letter.ToString(), m_letterFont, CrackerData.Configuration.UsedLetterBrush, letterCell, m_centreFormat);
 				g.DrawString(key.Number.ToString(), m_numberFont, CrackerData.Configuration.UsedLetterBrush, numberCell, m_centreFormat);
 			}
@@ -190,7 +199,7 @@ namespace SiriusCodeCracker
 		private void KeyBoardUserControl_Resize(object sender, EventArgs e)
 		{
 			m_resized = true;
-			this.Refresh();
+			//this.Refresh();
 		}
 
 		private void KeyBoardUserControl_MouseClick(object sender, MouseEventArgs e)
@@ -284,6 +293,7 @@ namespace SiriusCodeCracker
 				{
 					if (CrackerData.SelectedCharacter.SelectedLetter != GridCharacter.NO_LETTER)
 					{
+						CrackerData.Corrections++;
 						CrackerData.MarkKeyboardLetterUnused(CrackerData.SelectedCharacter.SelectedLetter);
 						CrackerData.UnassignLetter(CrackerData.SelectedCharacter.SelectedLetter);
 						if (LetterSelected != null)
@@ -294,13 +304,15 @@ namespace SiriusCodeCracker
 				}
 				else if (selectedKey != null && !selectedKey.Given && !selectedKey.NotRequired)
 				{
-					if (selectedKey.Used && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
+					if (CrackerData.SelectedCharacter.IsGameLetter() && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
 					{
-						if (MessageBox.Show(string.Format("The letter '{0}' is already used. Do you wish to move it to the new location?",
+						if (MessageBox.Show(string.Format("Do you wish to change the letter from '{0}' to '{1}'?",
+															CrackerData.SelectedCharacter.SelectedLetter,
 															selectedKey.Letter),
-											"Move Letter", MessageBoxButtons.YesNo) == DialogResult.Yes)
+											"Change Letter", MessageBoxButtons.YesNo) == DialogResult.Yes)
 						{
-							CrackerData.UnassignLetter(selectedKey.Letter);
+							CrackerData.Corrections++;
+							CrackerData.MarkKeyboardLetterUnused(CrackerData.SelectedCharacter.SelectedLetter);
 							CrackerData.AssignLetter(selectedKey.Letter);
 							if (LetterSelected != null)
 							{
@@ -308,14 +320,14 @@ namespace SiriusCodeCracker
 							}
 						}
 					}
-					else if (CrackerData.SelectedCharacter.IsGameLetter() && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
+					else if (selectedKey.Used && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
 					{
-						if (MessageBox.Show(string.Format("Do you wish to change the letter from '{0}' to '{1}'?",
-															CrackerData.SelectedCharacter.SelectedLetter,
+						if (MessageBox.Show(string.Format("The letter '{0}' is already used. Do you wish to move it to the new location?",
 															selectedKey.Letter),
-											"Change Letter", MessageBoxButtons.YesNo) == DialogResult.Yes)
+											"Move Letter", MessageBoxButtons.YesNo) == DialogResult.Yes)
 						{
-							CrackerData.MarkKeyboardLetterUnused(CrackerData.SelectedCharacter.SelectedLetter);
+							CrackerData.Corrections++;
+							CrackerData.UnassignLetter(selectedKey.Letter);
 							CrackerData.AssignLetter(selectedKey.Letter);
 							if (LetterSelected != null)
 							{
