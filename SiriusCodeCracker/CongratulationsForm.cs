@@ -16,23 +16,24 @@ namespace SiriusCodeCracker
 			InitializeComponent();
 
 			DurationLabel.Text = "Duration: ";
-			if (CrackerData.GameDuration.Value.Hours > 0)
+			if (CrackerData.GameDurationSeconds/ 3600 > 0)
 			{
 				DurationLabel.Text += string.Format("{0}:{1}:{2}",
-													CrackerData.GameDuration.Value.Hours.ToString("00"),
-													CrackerData.GameDuration.Value.Minutes.ToString("00"),
-													CrackerData.GameDuration.Value.Seconds.ToString("00"));
+													(CrackerData.GameDurationSeconds / 3600).ToString("00"),
+													((CrackerData.GameDurationSeconds % 3600) / 60).ToString("00"),
+													(CrackerData.GameDurationSeconds % 60).ToString("00"));
 			}
-			else if (CrackerData.GameDuration.Value.Minutes > 0)
+			else if ((CrackerData.GameDurationSeconds % 3600) / 60 > 0)
 			{
 				DurationLabel.Text += string.Format("{0}:{1}",
-													CrackerData.GameDuration.Value.Minutes.ToString("00"),
-													CrackerData.GameDuration.Value.Seconds.ToString("00"));
+													((CrackerData.GameDurationSeconds % 3600) / 60).ToString("00"),
+													(CrackerData.GameDurationSeconds % 60).ToString("00"));
 			}
 			else 
 			{
 				DurationLabel.Text += string.Format("{0} seconds!!!",
-													CrackerData.GameDuration.Value.Seconds.ToString("00"));
+													((CrackerData.GameDurationSeconds % 3600) / 60).ToString("00"),
+													(CrackerData.GameDurationSeconds % 60).ToString("00"));
 			}
 
 			ExtraLabel.Text = "with " + CrackerData.Corrections + " corrections and " + CrackerData.GivenLetters + " given letters";

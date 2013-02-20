@@ -43,6 +43,7 @@
 			this.label1.Size = new System.Drawing.Size(439, 40);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "You have unravelled the code!";
+			this.label1.Click += new System.EventHandler(this.CongratulationsForm_Click);
 			// 
 			// DurationLabel
 			// 
@@ -54,6 +55,7 @@
 			this.DurationLabel.Size = new System.Drawing.Size(142, 40);
 			this.DurationLabel.TabIndex = 1;
 			this.DurationLabel.Text = "Duration";
+			this.DurationLabel.Click += new System.EventHandler(this.CongratulationsForm_Click);
 			// 
 			// ExtraLabel
 			// 
@@ -65,6 +67,7 @@
 			this.ExtraLabel.Size = new System.Drawing.Size(115, 33);
 			this.ExtraLabel.TabIndex = 2;
 			this.ExtraLabel.Text = "Duration";
+			this.ExtraLabel.Click += new System.EventHandler(this.CongratulationsForm_Click);
 			// 
 			// CongratulationsForm
 			// 
@@ -72,11 +75,12 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::SiriusCodeCracker.Properties.Resources.Congratulations;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.ClientSize = new System.Drawing.Size(720, 293);
+			this.ClientSize = new System.Drawing.Size(716, 289);
 			this.ControlBox = false;
 			this.Controls.Add(this.ExtraLabel);
 			this.Controls.Add(this.DurationLabel);
 			this.Controls.Add(this.label1);
+			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;

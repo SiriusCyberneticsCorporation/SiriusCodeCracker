@@ -20,9 +20,11 @@ namespace SiriusCodeCracker
 
 		public static int Corrections = 0;
 		public static int GivenLetters = 0;
-		public static Nullable<TimeSpan> GameDuration = null;
+		public static int GameDurationSeconds = 0;
+		public static string PlayerName = "Unknown Player";
 		public static DateTime StartTime = DateTime.MinValue;
 
+		private static bool m_askingQuestion = false;
 		private static System.Drawing.Point m_selectedCell = new System.Drawing.Point(-1,-1);
 		private static GridCharacter m_selectedCharacter = null;
 		private static SiriusCodeCrackerConfiguration m_configuration = new SiriusCodeCrackerConfiguration();
@@ -34,8 +36,71 @@ namespace SiriusCodeCracker
 		private static KeyboardCharacter[,] m_keyboardRows = new KeyboardCharacter[3,10];
 		private static Dictionary<char, KeyboardCharacter> m_keyboardLetterLookup = new Dictionary<char, KeyboardCharacter>();
 		private static List<char> m_lettersUsed = new List<char>();
+		private static Enumerations.eGameState m_gameState = Enumerations.eGameState.None;
+		private static Enumerations.eGameState m_previousGameState = Enumerations.eGameState.None;
+
+		public static void StartGame()
+		{
+			GameDurationSeconds = 0;
+			m_gameState = Enumerations.eGameState.Active;
+		}
+
+		public static void StopGame()
+		{
+			GameDurationSeconds = 0;
+			m_gameState = Enumerations.eGameState.None;
+		}
+
+		public static void PauseGame()
+		{
+			m_gameState = Enumerations.eGameState.Paused;
+		}
+
+		public static void ResumeGame()
+		{
+			m_gameState = Enumerations.eGameState.Active;
+		}
+
+		public static void LeaveGame()
+		{
+			if (!m_askingQuestion)
+			{
+				m_previousGameState = m_gameState;
+				if (m_gameState == Enumerations.eGameState.Active)
+				{
+					m_gameState = Enumerations.eGameState.Paused;
+				}
+			}
+		}
 
 
+		public static void AskingQuestion(bool active)
+		{
+			m_askingQuestion = active;
+		}
+
+		public static void ReturnToGameGame()
+		{
+			if (!m_askingQuestion)
+			{
+				m_gameState = m_previousGameState;
+			}
+		}
+
+		public static bool GameIsActive()
+		{
+			return m_gameState == Enumerations.eGameState.Active;
+		}
+
+		public static bool GameIsPaused()
+		{
+			return m_gameState == Enumerations.eGameState.Paused;
+		}
+
+		public static bool GameIsComplete()
+		{
+			return m_gameState == Enumerations.eGameState.Complete;
+		}
 
 		public static bool CheckCompletion()
 		{
@@ -80,19 +145,19 @@ namespace SiriusCodeCracker
 				gridWord.Complete = (letterCount == gridWord.Word.Length);
 			}
 
-			if (result && GameDuration == null)
+			if (result && m_gameState == Enumerations.eGameState.Active)
 			{
-				GameDuration = DateTime.Now.Subtract(StartTime);
+				m_gameState = Enumerations.eGameState.Complete;
 
 				File.AppendAllText("CodeCrackerStatistics.csv",
 									string.Format("{0},{1},{2},{3},{4}:{5}:{6},{7},{8}\r\n",
-												"Unknown User",
+												PlayerName,
 												DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"),
 												m_configuration.Rows,
 												m_configuration.Columns,
-												GameDuration.Value.Hours.ToString("00"),
-												GameDuration.Value.Minutes.ToString("00"),
-												GameDuration.Value.Seconds.ToString("00"),
+												(GameDurationSeconds / 3600).ToString("00"),
+												((GameDurationSeconds % 3600) / 60).ToString("00"),
+												(GameDurationSeconds % 60).ToString("00"),
 												Corrections,
 												GivenLetters));
 			}
@@ -372,11 +437,6 @@ namespace SiriusCodeCracker
 			random = 0;
 		}
 
-		public static void Reset()
-		{
-			m_characterGrid = null;
-		}
-
 		public static void ResetGrid()
 		{
 			GridWords.Clear();
@@ -386,7 +446,7 @@ namespace SiriusCodeCracker
 
 			Corrections = 0;
 			GivenLetters = 0;
-			GameDuration = null;
+			GameDurationSeconds = 0;
 			StartTime = DateTime.Now;
 
 			m_characterGrid = null;

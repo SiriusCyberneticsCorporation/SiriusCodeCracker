@@ -137,7 +137,7 @@ namespace SiriusCodeCracker
 			letterFormat.LineAlignment = StringAlignment.Center;
 			letterFormat.Alignment = StringAlignment.Center;
 
-			e.Graphics.Clear(CrackerData.Configuration.BackgroundColour);
+			e.Graphics.Clear(BackgroundColourPictureBox.BackColor);
 
 			RectangleF cell;
 

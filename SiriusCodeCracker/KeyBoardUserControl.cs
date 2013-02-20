@@ -199,68 +199,70 @@ namespace SiriusCodeCracker
 		private void KeyBoardUserControl_Resize(object sender, EventArgs e)
 		{
 			m_resized = true;
-			//this.Refresh();
 		}
 
 		private void KeyBoardUserControl_MouseClick(object sender, MouseEventArgs e)
 		{
-			bool deletePressed = false;
-			KeyboardCharacter selectedKey = null;
-			float keyWidth = (float)this.Width / (float)10.0f;
-			float keyHeight = (float)this.Height / 3.0f;
-
-			int columnSelected = -1;
-			int rowSelected = (int)(e.Y / keyHeight);
-
-			switch (rowSelected)
+			if (CrackerData.GameIsActive())
 			{
-				case 0:
-					columnSelected = (int)(e.X / keyWidth);
-					break;
-				case 1:
-					{
-						float shiftedX = e.X - (keyWidth / 2);
-						if (shiftedX >= 0)
+				bool deletePressed = false;
+				KeyboardCharacter selectedKey = null;
+				float keyWidth = (float)this.Width / (float)10.0f;
+				float keyHeight = (float)this.Height / 3.0f;
+
+				int columnSelected = -1;
+				int rowSelected = (int)(e.Y / keyHeight);
+
+				switch (rowSelected)
+				{
+					case 0:
+						columnSelected = (int)(e.X / keyWidth);
+						break;
+					case 1:
 						{
-							columnSelected = (int)(shiftedX / keyWidth);
-							if (columnSelected > 8)
+							float shiftedX = e.X - (keyWidth / 2);
+							if (shiftedX >= 0)
 							{
-								columnSelected = -1;
+								columnSelected = (int)(shiftedX / keyWidth);
+								if (columnSelected > 8)
+								{
+									columnSelected = -1;
+								}
 							}
 						}
-					}
-					break;
-				case 2:
-					{
-						float shiftedX = e.X - (keyWidth * 1.5f);
-						if (shiftedX >= 0)
+						break;
+					case 2:
 						{
-							columnSelected = (int)(shiftedX / keyWidth);
-							if (columnSelected > 6)
+							float shiftedX = e.X - (keyWidth * 1.5f);
+							if (shiftedX >= 0)
 							{
-								deletePressed = true;
-								columnSelected = -1;
+								columnSelected = (int)(shiftedX / keyWidth);
+								if (columnSelected > 6)
+								{
+									deletePressed = true;
+									columnSelected = -1;
+								}
+								else
+								{
+									// Skip the delete keys.
+									columnSelected += 1;
+								}
 							}
 							else
 							{
-								// Skip the delete keys.
-								columnSelected += 1;
+								deletePressed = true;
 							}
 						}
-						else
-						{
-							deletePressed = true;
-						}
-					}
-					break;
-			}
+						break;
+				}
 
-			if (columnSelected >= 0)
-			{
-				selectedKey = CrackerData.Keyboard[rowSelected, columnSelected];
-			}
+				if (columnSelected >= 0)
+				{
+					selectedKey = CrackerData.Keyboard[rowSelected, columnSelected];
+				}
 
-			ProcessKey(selectedKey, deletePressed);
+				ProcessKey(selectedKey, deletePressed);
+			}
 		}
 
 		public void HandleKeyPress(Keys keyPressed)
@@ -306,6 +308,7 @@ namespace SiriusCodeCracker
 				{
 					if (CrackerData.SelectedCharacter.IsGameLetter() && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
 					{
+						CrackerData.AskingQuestion(true);
 						if (MessageBox.Show(string.Format("Do you wish to change the letter from '{0}' to '{1}'?",
 															CrackerData.SelectedCharacter.SelectedLetter,
 															selectedKey.Letter),
@@ -319,9 +322,11 @@ namespace SiriusCodeCracker
 								LetterSelected();
 							}
 						}
+						CrackerData.AskingQuestion(false);
 					}
 					else if (selectedKey.Used && CrackerData.SelectedCharacter.SelectedLetter != selectedKey.Letter)
 					{
+						CrackerData.AskingQuestion(true);
 						if (MessageBox.Show(string.Format("The letter '{0}' is already used. Do you wish to move it to the new location?",
 															selectedKey.Letter),
 											"Move Letter", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -334,6 +339,7 @@ namespace SiriusCodeCracker
 								LetterSelected();
 							}
 						}
+						CrackerData.AskingQuestion(false);
 					}
 					else if (!selectedKey.Used)
 					{

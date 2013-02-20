@@ -7,6 +7,15 @@ namespace SiriusCodeCracker
 {
 	public class Enumerations
 	{
+
+		public enum eGameState
+		{
+			None,
+			Active,
+			Paused,
+			Complete
+		}
+
 		public enum CellCharacterState
 		{
 			Empty,
@@ -15,15 +24,7 @@ namespace SiriusCodeCracker
 			Unusable,
 			Letter
 		}
-		/*
-		public enum CellVisualState
-		{
-			Empty,
-			None,
-			Selected,
-			Highlighted
-		}
-		*/
+
 		public enum CellGameState
 		{
 			Empty,
