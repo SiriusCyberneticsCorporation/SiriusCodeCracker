@@ -57,6 +57,11 @@
 			this.ShowIncorrectWordsCheckBox = new System.Windows.Forms.CheckBox();
 			this.TheCancelButton = new System.Windows.Forms.Button();
 			this.SaveButton = new System.Windows.Forms.Button();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.HardDifficultyRadioButton = new System.Windows.Forms.RadioButton();
+			this.MediumDifficultyRadioButton = new System.Windows.Forms.RadioButton();
+			this.NormalDifficultyRadioButton = new System.Windows.Forms.RadioButton();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			((System.ComponentModel.ISupportInitialize)(this.GivenLetterColourPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.HighlightColourPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumberColourPictureBox)).BeginInit();
@@ -69,22 +74,24 @@
 			((System.ComponentModel.ISupportInitialize)(this.UsedLetterColourPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.ErrorColourPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.StartingLettersNumericUpDown)).BeginInit();
+			this.groupBox1.SuspendLayout();
+			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// GivenLetterColourPictureBox
 			// 
 			this.GivenLetterColourPictureBox.BackColor = System.Drawing.Color.Blue;
 			this.GivenLetterColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.GivenLetterColourPictureBox.Location = new System.Drawing.Point(296, 118);
+			this.GivenLetterColourPictureBox.Location = new System.Drawing.Point(112, 116);
 			this.GivenLetterColourPictureBox.Name = "GivenLetterColourPictureBox";
-			this.GivenLetterColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.GivenLetterColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.GivenLetterColourPictureBox.TabIndex = 21;
 			this.GivenLetterColourPictureBox.TabStop = false;
 			this.GivenLetterColourPictureBox.Click += new System.EventHandler(this.GivenLetterColourPictureBox_Click);
 			// 
 			// label8
 			// 
-			this.label8.Location = new System.Drawing.Point(190, 118);
+			this.label8.Location = new System.Drawing.Point(6, 116);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(100, 20);
 			this.label8.TabIndex = 20;
@@ -95,16 +102,16 @@
 			// 
 			this.HighlightColourPictureBox.BackColor = System.Drawing.Color.CornflowerBlue;
 			this.HighlightColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.HighlightColourPictureBox.Location = new System.Drawing.Point(296, 98);
+			this.HighlightColourPictureBox.Location = new System.Drawing.Point(112, 96);
 			this.HighlightColourPictureBox.Name = "HighlightColourPictureBox";
-			this.HighlightColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.HighlightColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.HighlightColourPictureBox.TabIndex = 19;
 			this.HighlightColourPictureBox.TabStop = false;
 			this.HighlightColourPictureBox.Click += new System.EventHandler(this.HighlightColourPictureBox_Click);
 			// 
 			// label7
 			// 
-			this.label7.Location = new System.Drawing.Point(190, 98);
+			this.label7.Location = new System.Drawing.Point(6, 96);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(100, 20);
 			this.label7.TabIndex = 18;
@@ -115,9 +122,9 @@
 			// 
 			this.NumberColourPictureBox.BackColor = System.Drawing.Color.Black;
 			this.NumberColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.NumberColourPictureBox.Location = new System.Drawing.Point(296, 78);
+			this.NumberColourPictureBox.Location = new System.Drawing.Point(112, 76);
 			this.NumberColourPictureBox.Name = "NumberColourPictureBox";
-			this.NumberColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.NumberColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.NumberColourPictureBox.TabIndex = 17;
 			this.NumberColourPictureBox.TabStop = false;
 			this.NumberColourPictureBox.Click += new System.EventHandler(this.NumberColourPictureBox_Click);
@@ -126,9 +133,9 @@
 			// 
 			this.GridColourPictureBox.BackColor = System.Drawing.Color.Black;
 			this.GridColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.GridColourPictureBox.Location = new System.Drawing.Point(296, 38);
+			this.GridColourPictureBox.Location = new System.Drawing.Point(112, 36);
 			this.GridColourPictureBox.Name = "GridColourPictureBox";
-			this.GridColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.GridColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.GridColourPictureBox.TabIndex = 16;
 			this.GridColourPictureBox.TabStop = false;
 			this.GridColourPictureBox.Click += new System.EventHandler(this.GridColourPictureBox_Click);
@@ -137,9 +144,9 @@
 			// 
 			this.LetterColourPictureBox.BackColor = System.Drawing.Color.Black;
 			this.LetterColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.LetterColourPictureBox.Location = new System.Drawing.Point(296, 58);
+			this.LetterColourPictureBox.Location = new System.Drawing.Point(112, 56);
 			this.LetterColourPictureBox.Name = "LetterColourPictureBox";
-			this.LetterColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.LetterColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.LetterColourPictureBox.TabIndex = 15;
 			this.LetterColourPictureBox.TabStop = false;
 			this.LetterColourPictureBox.Click += new System.EventHandler(this.LetterColourPictureBox_Click);
@@ -148,16 +155,16 @@
 			// 
 			this.BackgroundColourPictureBox.BackColor = System.Drawing.Color.White;
 			this.BackgroundColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.BackgroundColourPictureBox.Location = new System.Drawing.Point(296, 18);
+			this.BackgroundColourPictureBox.Location = new System.Drawing.Point(112, 16);
 			this.BackgroundColourPictureBox.Name = "BackgroundColourPictureBox";
-			this.BackgroundColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.BackgroundColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.BackgroundColourPictureBox.TabIndex = 1;
 			this.BackgroundColourPictureBox.TabStop = false;
 			this.BackgroundColourPictureBox.Click += new System.EventHandler(this.BackgroundColourPictureBox_Click);
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(190, 78);
+			this.label6.Location = new System.Drawing.Point(6, 76);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(100, 20);
 			this.label6.TabIndex = 14;
@@ -166,7 +173,7 @@
 			// 
 			// ColourTestArea
 			// 
-			this.ColourTestArea.Location = new System.Drawing.Point(350, 18);
+			this.ColourTestArea.Location = new System.Drawing.Point(151, 16);
 			this.ColourTestArea.Name = "ColourTestArea";
 			this.ColourTestArea.Size = new System.Drawing.Size(164, 160);
 			this.ColourTestArea.TabIndex = 10;
@@ -175,7 +182,7 @@
 			// 
 			// label5
 			// 
-			this.label5.Location = new System.Drawing.Point(190, 58);
+			this.label5.Location = new System.Drawing.Point(6, 56);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(100, 20);
 			this.label5.TabIndex = 13;
@@ -185,7 +192,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(21, 51);
+			this.label2.Location = new System.Drawing.Point(195, 25);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(34, 13);
 			this.label2.TabIndex = 9;
@@ -193,7 +200,7 @@
 			// 
 			// label4
 			// 
-			this.label4.Location = new System.Drawing.Point(190, 38);
+			this.label4.Location = new System.Drawing.Point(6, 36);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(100, 20);
 			this.label4.TabIndex = 12;
@@ -202,7 +209,7 @@
 			// 
 			// RowsNumericUpDown
 			// 
-			this.RowsNumericUpDown.Location = new System.Drawing.Point(111, 49);
+			this.RowsNumericUpDown.Location = new System.Drawing.Point(285, 23);
 			this.RowsNumericUpDown.Maximum = new decimal(new int[] {
             32,
             0,
@@ -233,7 +240,7 @@
 			// 
 			// label3
 			// 
-			this.label3.Location = new System.Drawing.Point(190, 18);
+			this.label3.Location = new System.Drawing.Point(6, 16);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(100, 20);
 			this.label3.TabIndex = 11;
@@ -270,16 +277,16 @@
 			// 
 			this.UsedLetterColourPictureBox.BackColor = System.Drawing.Color.DimGray;
 			this.UsedLetterColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.UsedLetterColourPictureBox.Location = new System.Drawing.Point(296, 158);
+			this.UsedLetterColourPictureBox.Location = new System.Drawing.Point(112, 156);
 			this.UsedLetterColourPictureBox.Name = "UsedLetterColourPictureBox";
-			this.UsedLetterColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.UsedLetterColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.UsedLetterColourPictureBox.TabIndex = 23;
 			this.UsedLetterColourPictureBox.TabStop = false;
 			this.UsedLetterColourPictureBox.Click += new System.EventHandler(this.UsedLetterColourPictureBox_Click);
 			// 
 			// label9
 			// 
-			this.label9.Location = new System.Drawing.Point(190, 158);
+			this.label9.Location = new System.Drawing.Point(6, 156);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(100, 20);
 			this.label9.TabIndex = 22;
@@ -290,16 +297,16 @@
 			// 
 			this.ErrorColourPictureBox.BackColor = System.Drawing.Color.Pink;
 			this.ErrorColourPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.ErrorColourPictureBox.Location = new System.Drawing.Point(296, 138);
+			this.ErrorColourPictureBox.Location = new System.Drawing.Point(112, 136);
 			this.ErrorColourPictureBox.Name = "ErrorColourPictureBox";
-			this.ErrorColourPictureBox.Size = new System.Drawing.Size(48, 20);
+			this.ErrorColourPictureBox.Size = new System.Drawing.Size(32, 20);
 			this.ErrorColourPictureBox.TabIndex = 25;
 			this.ErrorColourPictureBox.TabStop = false;
 			this.ErrorColourPictureBox.Click += new System.EventHandler(this.ErrorColourPictureBox_Click);
 			// 
 			// label10
 			// 
-			this.label10.Location = new System.Drawing.Point(190, 138);
+			this.label10.Location = new System.Drawing.Point(6, 136);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(100, 20);
 			this.label10.TabIndex = 24;
@@ -308,7 +315,7 @@
 			// 
 			// StartingLettersNumericUpDown
 			// 
-			this.StartingLettersNumericUpDown.Location = new System.Drawing.Point(111, 75);
+			this.StartingLettersNumericUpDown.Location = new System.Drawing.Point(111, 49);
 			this.StartingLettersNumericUpDown.Maximum = new decimal(new int[] {
             5,
             0,
@@ -326,7 +333,7 @@
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(21, 77);
+			this.label11.Location = new System.Drawing.Point(21, 51);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(78, 13);
 			this.label11.TabIndex = 27;
@@ -335,7 +342,7 @@
 			// StartingLettersGroupedCheckBox
 			// 
 			this.StartingLettersGroupedCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.StartingLettersGroupedCheckBox.Location = new System.Drawing.Point(20, 102);
+			this.StartingLettersGroupedCheckBox.Location = new System.Drawing.Point(194, 48);
 			this.StartingLettersGroupedCheckBox.Name = "StartingLettersGroupedCheckBox";
 			this.StartingLettersGroupedCheckBox.Size = new System.Drawing.Size(141, 20);
 			this.StartingLettersGroupedCheckBox.TabIndex = 28;
@@ -345,7 +352,7 @@
 			// ShowAllErrorsCheckBox
 			// 
 			this.ShowAllErrorsCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.ShowAllErrorsCheckBox.Location = new System.Drawing.Point(20, 125);
+			this.ShowAllErrorsCheckBox.Location = new System.Drawing.Point(20, 75);
 			this.ShowAllErrorsCheckBox.Name = "ShowAllErrorsCheckBox";
 			this.ShowAllErrorsCheckBox.Size = new System.Drawing.Size(141, 20);
 			this.ShowAllErrorsCheckBox.TabIndex = 29;
@@ -355,7 +362,7 @@
 			// ShowIncorrectWordsCheckBox
 			// 
 			this.ShowIncorrectWordsCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.ShowIncorrectWordsCheckBox.Location = new System.Drawing.Point(20, 148);
+			this.ShowIncorrectWordsCheckBox.Location = new System.Drawing.Point(194, 75);
 			this.ShowIncorrectWordsCheckBox.Name = "ShowIncorrectWordsCheckBox";
 			this.ShowIncorrectWordsCheckBox.Size = new System.Drawing.Size(141, 20);
 			this.ShowIncorrectWordsCheckBox.TabIndex = 30;
@@ -365,7 +372,7 @@
 			// TheCancelButton
 			// 
 			this.TheCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.TheCancelButton.Location = new System.Drawing.Point(341, 196);
+			this.TheCancelButton.Location = new System.Drawing.Point(242, 344);
 			this.TheCancelButton.Name = "TheCancelButton";
 			this.TheCancelButton.Size = new System.Drawing.Size(75, 23);
 			this.TheCancelButton.TabIndex = 31;
@@ -376,7 +383,7 @@
 			// SaveButton
 			// 
 			this.SaveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.SaveButton.Location = new System.Drawing.Point(120, 196);
+			this.SaveButton.Location = new System.Drawing.Point(37, 344);
 			this.SaveButton.Name = "SaveButton";
 			this.SaveButton.Size = new System.Drawing.Size(75, 23);
 			this.SaveButton.TabIndex = 32;
@@ -384,12 +391,84 @@
 			this.SaveButton.UseVisualStyleBackColor = true;
 			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
 			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.HardDifficultyRadioButton);
+			this.groupBox1.Controls.Add(this.MediumDifficultyRadioButton);
+			this.groupBox1.Controls.Add(this.NormalDifficultyRadioButton);
+			this.groupBox1.Location = new System.Drawing.Point(20, 101);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(322, 44);
+			this.groupBox1.TabIndex = 33;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Level of Difficulty";
+			// 
+			// HardDifficultyRadioButton
+			// 
+			this.HardDifficultyRadioButton.AutoSize = true;
+			this.HardDifficultyRadioButton.Location = new System.Drawing.Point(255, 19);
+			this.HardDifficultyRadioButton.Name = "HardDifficultyRadioButton";
+			this.HardDifficultyRadioButton.Size = new System.Drawing.Size(48, 17);
+			this.HardDifficultyRadioButton.TabIndex = 2;
+			this.HardDifficultyRadioButton.Text = "Hard";
+			this.HardDifficultyRadioButton.UseVisualStyleBackColor = true;
+			// 
+			// MediumDifficultyRadioButton
+			// 
+			this.MediumDifficultyRadioButton.AutoSize = true;
+			this.MediumDifficultyRadioButton.Location = new System.Drawing.Point(132, 19);
+			this.MediumDifficultyRadioButton.Name = "MediumDifficultyRadioButton";
+			this.MediumDifficultyRadioButton.Size = new System.Drawing.Size(62, 17);
+			this.MediumDifficultyRadioButton.TabIndex = 1;
+			this.MediumDifficultyRadioButton.Text = "Medium";
+			this.MediumDifficultyRadioButton.UseVisualStyleBackColor = true;
+			// 
+			// NormalDifficultyRadioButton
+			// 
+			this.NormalDifficultyRadioButton.AutoSize = true;
+			this.NormalDifficultyRadioButton.Checked = true;
+			this.NormalDifficultyRadioButton.Location = new System.Drawing.Point(13, 19);
+			this.NormalDifficultyRadioButton.Name = "NormalDifficultyRadioButton";
+			this.NormalDifficultyRadioButton.Size = new System.Drawing.Size(58, 17);
+			this.NormalDifficultyRadioButton.TabIndex = 0;
+			this.NormalDifficultyRadioButton.TabStop = true;
+			this.NormalDifficultyRadioButton.Text = "Normal";
+			this.NormalDifficultyRadioButton.UseVisualStyleBackColor = true;
+			// 
+			// groupBox2
+			// 
+			this.groupBox2.Controls.Add(this.label3);
+			this.groupBox2.Controls.Add(this.BackgroundColourPictureBox);
+			this.groupBox2.Controls.Add(this.LetterColourPictureBox);
+			this.groupBox2.Controls.Add(this.label6);
+			this.groupBox2.Controls.Add(this.GridColourPictureBox);
+			this.groupBox2.Controls.Add(this.label5);
+			this.groupBox2.Controls.Add(this.NumberColourPictureBox);
+			this.groupBox2.Controls.Add(this.label7);
+			this.groupBox2.Controls.Add(this.label4);
+			this.groupBox2.Controls.Add(this.ErrorColourPictureBox);
+			this.groupBox2.Controls.Add(this.HighlightColourPictureBox);
+			this.groupBox2.Controls.Add(this.label10);
+			this.groupBox2.Controls.Add(this.label8);
+			this.groupBox2.Controls.Add(this.ColourTestArea);
+			this.groupBox2.Controls.Add(this.GivenLetterColourPictureBox);
+			this.groupBox2.Controls.Add(this.UsedLetterColourPictureBox);
+			this.groupBox2.Controls.Add(this.label9);
+			this.groupBox2.Location = new System.Drawing.Point(20, 151);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(322, 180);
+			this.groupBox2.TabIndex = 34;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Colouring";
+			// 
 			// CodeCrackerSettingsForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.TheCancelButton;
-			this.ClientSize = new System.Drawing.Size(525, 232);
+			this.ClientSize = new System.Drawing.Size(355, 382);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.SaveButton);
 			this.Controls.Add(this.TheCancelButton);
 			this.Controls.Add(this.ShowIncorrectWordsCheckBox);
@@ -397,27 +476,10 @@
 			this.Controls.Add(this.StartingLettersGroupedCheckBox);
 			this.Controls.Add(this.StartingLettersNumericUpDown);
 			this.Controls.Add(this.label11);
-			this.Controls.Add(this.ErrorColourPictureBox);
-			this.Controls.Add(this.label10);
-			this.Controls.Add(this.ColourTestArea);
-			this.Controls.Add(this.UsedLetterColourPictureBox);
 			this.Controls.Add(this.ColumnsNumericUpDown);
-			this.Controls.Add(this.label9);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.GivenLetterColourPictureBox);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.label8);
 			this.Controls.Add(this.RowsNumericUpDown);
-			this.Controls.Add(this.HighlightColourPictureBox);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.label7);
 			this.Controls.Add(this.label2);
-			this.Controls.Add(this.NumberColourPictureBox);
-			this.Controls.Add(this.label5);
-			this.Controls.Add(this.GridColourPictureBox);
-			this.Controls.Add(this.label6);
-			this.Controls.Add(this.LetterColourPictureBox);
-			this.Controls.Add(this.BackgroundColourPictureBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -438,6 +500,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.UsedLetterColourPictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.ErrorColourPictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.StartingLettersNumericUpDown)).EndInit();
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
+			this.groupBox2.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -474,5 +539,10 @@
 		private System.Windows.Forms.CheckBox ShowIncorrectWordsCheckBox;
 		private System.Windows.Forms.Button TheCancelButton;
 		private System.Windows.Forms.Button SaveButton;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.RadioButton HardDifficultyRadioButton;
+		private System.Windows.Forms.RadioButton MediumDifficultyRadioButton;
+		private System.Windows.Forms.RadioButton NormalDifficultyRadioButton;
+		private System.Windows.Forms.GroupBox groupBox2;
 	}
 }

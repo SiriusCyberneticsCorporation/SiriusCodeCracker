@@ -18,12 +18,41 @@ namespace SiriusCodeCracker
 			ErrorColour = Properties.Settings.Default.ErrorColour;
 		}
 
-		public int Columns { get { return m_numberOfColumns; } set { m_numberOfColumns = Math.Max(5, Math.Min(32, value)); } }
-		public int Rows { get { return m_numberOfRows; } set { m_numberOfRows = Math.Max(5, Math.Min(32, value)); } }
-		public int GivenLetters { get { return m_givenLetters; } set { m_givenLetters = value; } }
-		public bool GivenLettersGrouped { get { return m_givenLettersGrouped; } set { m_givenLettersGrouped = value; } }
-		public bool ShowAllErrors { get { return m_showAllErrors; } set { m_showAllErrors = value; } }
-		public bool ShowIncorrectWords { get { return m_showIncorrectWords; } set { m_showIncorrectWords = value; } }
+		public int Columns 
+		{
+			get { return Properties.Settings.Default.Columns; }
+			set { Properties.Settings.Default.Columns = Math.Max(5, Math.Min(32, value)); }
+		}
+		public int Rows 
+		{
+			get { return Properties.Settings.Default.Rows; }
+			set { Properties.Settings.Default.Rows = Math.Max(5, Math.Min(32, value)); }
+		}
+		public int GivenLetters 
+		{
+			get { return Properties.Settings.Default.GivenLetters; }
+			set { Properties.Settings.Default.GivenLetters = value; }
+		}
+		public bool GivenLettersGrouped 
+		{
+			get { return Properties.Settings.Default.GivenLettersGrouped; }
+			set { Properties.Settings.Default.GivenLettersGrouped = value; }
+		}
+		public bool ShowAllErrors 
+		{
+			get { return Properties.Settings.Default.ShowAllErrors; }
+			set { Properties.Settings.Default.ShowAllErrors = value; }
+		}
+		public bool ShowIncorrectWords 
+		{
+			get { return Properties.Settings.Default.ShowIncorrectWords; }
+			set { Properties.Settings.Default.ShowIncorrectWords = value; }
+		}
+		public int Difficulty 
+		{
+			get { return Properties.Settings.Default.Difficulty; }
+			set { Properties.Settings.Default.Difficulty = Math.Max(1, Math.Min(3, value)); }
+		}
 
 		public Color BackgroundColour
 		{
@@ -111,12 +140,6 @@ namespace SiriusCodeCracker
 		public Brush HighlightBrush { get { return m_highlightBrush; } }
 		public Brush ErrorBrush { get { return m_errorBrush; } }
 
-		private int m_numberOfColumns = 18;
-		private int m_numberOfRows = 18;
-		private int m_givenLetters = 3;
-		private bool m_givenLettersGrouped = true;
-		private bool m_showAllErrors = false;
-		private bool m_showIncorrectWords = true;
 
 		private Brush m_letterBrush = Brushes.Black;
 		private Brush m_usedLetterBrush = Brushes.DimGray;

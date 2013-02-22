@@ -32,8 +32,7 @@ namespace SiriusCodeCracker
 			else 
 			{
 				DurationLabel.Text += string.Format("{0} seconds!!!",
-													((CrackerData.GameDurationSeconds % 3600) / 60).ToString("00"),
-													(CrackerData.GameDurationSeconds % 60).ToString("00"));
+													CrackerData.GameDurationSeconds.ToString("00"));
 			}
 
 			ExtraLabel.Text = "with " + CrackerData.Corrections + " corrections and " + CrackerData.GivenLetters + " given letters";

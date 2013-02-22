@@ -22,6 +22,19 @@ namespace SiriusCodeCracker
 			ShowAllErrorsCheckBox.Checked = CrackerData.Configuration.ShowAllErrors;
 			ShowIncorrectWordsCheckBox.Checked = CrackerData.Configuration.ShowIncorrectWords;
 
+			if (CrackerData.Configuration.Difficulty <= 1)
+			{
+				NormalDifficultyRadioButton.Checked = true;
+			}
+			else if (CrackerData.Configuration.Difficulty == 2)
+			{
+				MediumDifficultyRadioButton.Checked = true;
+			}
+			else
+			{
+				HardDifficultyRadioButton.Checked = true;
+			}
+
 			BackgroundColourPictureBox.BackColor = CrackerData.Configuration.BackgroundColour;
 			LetterColourPictureBox.BackColor = CrackerData.Configuration.LetterColour;
 			GridColourPictureBox.BackColor = CrackerData.Configuration.GridColour;
@@ -213,6 +226,19 @@ namespace SiriusCodeCracker
 			CrackerData.Configuration.GivenLettersGrouped = StartingLettersGroupedCheckBox.Checked;
 			CrackerData.Configuration.ShowAllErrors = ShowAllErrorsCheckBox.Checked;
 			CrackerData.Configuration.ShowIncorrectWords = ShowIncorrectWordsCheckBox.Checked;
+
+			if (NormalDifficultyRadioButton.Checked)
+			{
+				CrackerData.Configuration.Difficulty = 1;
+			}
+			else if (MediumDifficultyRadioButton.Checked)
+			{
+				CrackerData.Configuration.Difficulty = 2;
+			}
+			else
+			{
+				CrackerData.Configuration.Difficulty = 3;
+			}
 
 			CrackerData.Configuration.BackgroundColour = BackgroundColourPictureBox.BackColor;
 			CrackerData.Configuration.LetterColour = LetterColourPictureBox.BackColor;

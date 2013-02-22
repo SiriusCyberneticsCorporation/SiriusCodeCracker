@@ -61,6 +61,7 @@
     <Compile Include="CongratulationsForm.Designer.cs">
       <DependentUpon>CongratulationsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Copy of Words.cs" />
     <Compile Include="WordDefinitionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +151,9 @@
   <ItemGroup>
     <Content Include="SiriusCodeCracker.ico" />
     <Content Include="SiriusDictionary.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WordsWithDifficulty.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Congratulations.jpg" />

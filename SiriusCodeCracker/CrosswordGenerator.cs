@@ -27,50 +27,89 @@ namespace SiriusCodeCracker
 
 		public CrosswordGenerator()
 		{
-			foreach (string word in Words.TheWords)
+			InitialiseWords();
+		}
+
+		public void InitialiseWords()
+		{
+			m_shortestWord = 999;
+			m_longestWord = 0;
+			m_wordsByLength.Clear();
+			Array.Clear(m_characterPositions, 0, m_characterPositions.Length);
+
+			if (System.IO.File.Exists("WordsWithDifficulty.txt"))
 			{
-				int length = word.Length;
-				GeneratorWord wordToAdd = new GeneratorWord(word);
+				string line;
 
-				if (length < m_shortestWord)
+				System.IO.StreamReader file = new System.IO.StreamReader("WordsWithDifficulty.txt");
+				while ((line = file.ReadLine()) != null)
 				{
-					m_shortestWord = length;
-				}
-				if (length > m_longestWord)
-				{
-					m_longestWord = length;
+					int difficulty = -1;
+					string [] entries = line.Split(',');
+
+					if (entries.Length == 2 && int.TryParse(entries[1], out difficulty))
+					{
+						if (Math.Max(1, Math.Min(3, difficulty)) <= CrackerData.Configuration.Difficulty)
+						{
+							AddWord(entries[0]);
+						}
+					}
 				}
 
-				if (m_wordsByLength.ContainsKey(length))
+				file.Close();
+			}
+			else
+			{
+				foreach (string word in Words.TheWords)
 				{
-					m_wordsByLength[length].Add(wordToAdd);
+					AddWord(word);
+				}
+			}
+		}
+
+		private void AddWord(string word)
+		{
+			int length = word.Length;
+			GeneratorWord wordToAdd = new GeneratorWord(word);
+
+			if (length < m_shortestWord)
+			{
+				m_shortestWord = length;
+			}
+			if (length > m_longestWord)
+			{
+				m_longestWord = length;
+			}
+
+			if (m_wordsByLength.ContainsKey(length))
+			{
+				m_wordsByLength[length].Add(wordToAdd);
+			}
+			else
+			{
+				List<GeneratorWord> newList = new List<GeneratorWord>();
+				newList.Add(wordToAdd);
+				m_wordsByLength.Add(length, newList);
+			}
+
+			for (int letterPosition = 0; letterPosition < length; letterPosition++)
+			{
+				int letterNumber = word[letterPosition] - 65;
+
+				if (m_characterPositions[letterPosition, letterNumber] == null)
+				{
+					m_characterPositions[letterPosition, letterNumber] = new Dictionary<int, List<GeneratorWord>>();
+				}
+
+				if (m_characterPositions[letterPosition, letterNumber].ContainsKey(length))
+				{
+					m_characterPositions[letterPosition, letterNumber][length].Add(wordToAdd);
 				}
 				else
 				{
 					List<GeneratorWord> newList = new List<GeneratorWord>();
 					newList.Add(wordToAdd);
-					m_wordsByLength.Add(length, newList);
-				}
-
-				for (int letterPosition = 0; letterPosition < length; letterPosition++)
-				{
-					int letterNumber = word[letterPosition] - 65;
-
-					if (m_characterPositions[letterPosition, letterNumber] == null)
-					{
-						m_characterPositions[letterPosition, letterNumber] = new Dictionary<int, List<GeneratorWord>>();
-					}
-
-					if (m_characterPositions[letterPosition, letterNumber].ContainsKey(length))
-					{
-						m_characterPositions[letterPosition, letterNumber][length].Add(wordToAdd);
-					}
-					else
-					{
-						List<GeneratorWord> newList = new List<GeneratorWord>();
-						newList.Add(wordToAdd);
-						m_characterPositions[letterPosition, letterNumber].Add(length, newList);
-					}
+					m_characterPositions[letterPosition, letterNumber].Add(length, newList);
 				}
 			}
 		}

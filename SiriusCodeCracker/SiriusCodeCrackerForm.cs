@@ -11,7 +11,7 @@ namespace SiriusCodeCracker
 {
 	public partial class SiriusCodeCrackerForm : Form
 	{
-		private CrosswordGenerator m_crosswordGenerator = new CrosswordGenerator();
+		private CrosswordGenerator m_crosswordGenerator = null;
 
 		public SiriusCodeCrackerForm()
 		{
@@ -108,13 +108,25 @@ namespace SiriusCodeCracker
 				CrackerData.StopGame();
 				CrackerData.ResetGrid();
 				RefreshGridAndKeyboard();
+
+				WordDefinitionButton.Enabled = true;
+				PlayerComboBox.Enabled = true;
+				StatisticsButton.Text = "Statistics";
+				SettingsButton.Text = "Change Settings";
 			}
 			else
 			{
+				int currentDifficulty = CrackerData.Configuration.Difficulty;
 				CodeCrackerSettingsForm iCodeCrackerSettingsForm = new CodeCrackerSettingsForm();
 
 				if (iCodeCrackerSettingsForm.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 				{
+					if (currentDifficulty != CrackerData.Configuration.Difficulty)
+					{
+						m_crosswordGenerator.InitialiseWords();
+					}
+
+					CrackerData.StopGame();
 					CrackerData.ResetGrid();
 					RefreshGridAndKeyboard();
 				}
@@ -182,6 +194,8 @@ namespace SiriusCodeCracker
 
 		private void SiriusCodeCrackerForm_Load(object sender, EventArgs e)
 		{
+			m_crosswordGenerator = new CrosswordGenerator();
+
 			// restore location and size of the form on the desktop
 			this.DesktopBounds = new Rectangle(Properties.Settings.Default.Location, Properties.Settings.Default.Size);
 			// restore form's window state
