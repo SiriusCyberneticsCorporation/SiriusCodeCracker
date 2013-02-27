@@ -281,6 +281,11 @@ namespace SiriusCodeCracker
 					{
 						if (CrackerData.CharacterGrid[column, startRow - 1].IsLetter())
 						{
+							if (!CrackerData.CharacterGrid[column, startRow].IsLetter())
+							{
+								maxColumn = column;
+								break;
+							}
 							aboveCount++;
 						}
 						else
@@ -298,6 +303,10 @@ namespace SiriusCodeCracker
 					{
 						if (CrackerData.CharacterGrid[column, startRow + 1].IsLetter())
 						{
+							if (!CrackerData.CharacterGrid[column, startRow].IsLetter())
+							{
+								maxColumn = column;
+							}
 							belowCount++;
 						}
 						else
@@ -370,6 +379,11 @@ namespace SiriusCodeCracker
 					{
 						if (CrackerData.CharacterGrid[startColumn - 1, row].IsLetter())
 						{
+							if (!CrackerData.CharacterGrid[startColumn, row].IsLetter())
+							{
+								maxRow = row - 1;
+								break;
+							}
 							leftCount++;
 						}
 						else
@@ -387,6 +401,11 @@ namespace SiriusCodeCracker
 					{
 						if (CrackerData.CharacterGrid[startColumn + 1, row].IsLetter())
 						{
+							if (!CrackerData.CharacterGrid[startColumn, row].IsLetter())
+							{
+								maxRow = row - 1;
+								break;
+							}
 							rightCount++;
 						}
 						else
