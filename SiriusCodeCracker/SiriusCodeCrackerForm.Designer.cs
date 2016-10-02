@@ -32,77 +32,54 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SiriusCodeCrackerForm));
 			this.StartNewGameButton = new System.Windows.Forms.Button();
 			this.SettingsButton = new System.Windows.Forms.Button();
-			this.HeaderButtonsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
 			this.ExtraLetterButton = new System.Windows.Forms.Button();
 			this.StatisticsButton = new System.Windows.Forms.Button();
 			this.WordDefinitionButton = new System.Windows.Forms.Button();
 			this.PlayerPanel = new System.Windows.Forms.Panel();
-			this.CurrentGameLabel = new System.Windows.Forms.Label();
 			this.PlayerComboBox = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
+			this.CurrentGameLabel = new System.Windows.Forms.Label();
 			this.SecondTimer = new System.Windows.Forms.Timer(this.components);
-			this.CodeCrackerKeyBoard = new SiriusCodeCracker.KeyBoardUserControl();
+			this.GridPanel = new System.Windows.Forms.Panel();
 			this.CrosswordGrid = new SiriusCodeCracker.GridDisplayUserControl();
-			this.HeaderButtonsTableLayoutPanel.SuspendLayout();
+			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.CodeCrackerKeyBoard = new SiriusCodeCracker.KeyBoardUserControl();
 			this.PlayerPanel.SuspendLayout();
+			this.GridPanel.SuspendLayout();
+			this.flowLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// StartNewGameButton
 			// 
 			this.StartNewGameButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.StartNewGameButton.Location = new System.Drawing.Point(16, 6);
-			this.StartNewGameButton.Margin = new System.Windows.Forms.Padding(1);
+			this.StartNewGameButton.Location = new System.Drawing.Point(2, 4);
+			this.StartNewGameButton.Margin = new System.Windows.Forms.Padding(2);
 			this.StartNewGameButton.Name = "StartNewGameButton";
-			this.StartNewGameButton.Size = new System.Drawing.Size(90, 40);
+			this.StartNewGameButton.Size = new System.Drawing.Size(94, 30);
 			this.StartNewGameButton.TabIndex = 1;
-			this.StartNewGameButton.Text = "Start New Game";
+			this.StartNewGameButton.Text = "New Game";
 			this.StartNewGameButton.UseVisualStyleBackColor = true;
 			this.StartNewGameButton.Click += new System.EventHandler(this.StartNewGameButton_Click);
 			// 
 			// SettingsButton
 			// 
 			this.SettingsButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.SettingsButton.Location = new System.Drawing.Point(382, 6);
-			this.SettingsButton.Margin = new System.Windows.Forms.Padding(1);
+			this.SettingsButton.Location = new System.Drawing.Point(296, 4);
+			this.SettingsButton.Margin = new System.Windows.Forms.Padding(2);
 			this.SettingsButton.Name = "SettingsButton";
-			this.SettingsButton.Size = new System.Drawing.Size(90, 40);
+			this.SettingsButton.Size = new System.Drawing.Size(94, 30);
 			this.SettingsButton.TabIndex = 6;
-			this.SettingsButton.Text = "Change Settings";
+			this.SettingsButton.Text = "Settings";
 			this.SettingsButton.UseVisualStyleBackColor = true;
 			this.SettingsButton.Click += new System.EventHandler(this.SettingsButton_Click);
-			// 
-			// HeaderButtonsTableLayoutPanel
-			// 
-			this.HeaderButtonsTableLayoutPanel.ColumnCount = 5;
-			this.HeaderButtonsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.HeaderButtonsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.HeaderButtonsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.HeaderButtonsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.HeaderButtonsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.HeaderButtonsTableLayoutPanel.Controls.Add(this.ExtraLetterButton, 0, 0);
-			this.HeaderButtonsTableLayoutPanel.Controls.Add(this.StatisticsButton, 1, 0);
-			this.HeaderButtonsTableLayoutPanel.Controls.Add(this.StartNewGameButton, 0, 0);
-			this.HeaderButtonsTableLayoutPanel.Controls.Add(this.SettingsButton, 3, 0);
-			this.HeaderButtonsTableLayoutPanel.Controls.Add(this.WordDefinitionButton, 4, 0);
-			this.HeaderButtonsTableLayoutPanel.Controls.Add(this.PlayerPanel, 0, 1);
-			this.HeaderButtonsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.HeaderButtonsTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-			this.HeaderButtonsTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-			this.HeaderButtonsTableLayoutPanel.Name = "HeaderButtonsTableLayoutPanel";
-			this.HeaderButtonsTableLayoutPanel.RowCount = 2;
-			this.HeaderButtonsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.HeaderButtonsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-			this.HeaderButtonsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.HeaderButtonsTableLayoutPanel.Size = new System.Drawing.Size(611, 80);
-			this.HeaderButtonsTableLayoutPanel.TabIndex = 8;
 			// 
 			// ExtraLetterButton
 			// 
 			this.ExtraLetterButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.ExtraLetterButton.Location = new System.Drawing.Point(138, 6);
-			this.ExtraLetterButton.Margin = new System.Windows.Forms.Padding(1);
+			this.ExtraLetterButton.Location = new System.Drawing.Point(100, 4);
+			this.ExtraLetterButton.Margin = new System.Windows.Forms.Padding(2);
 			this.ExtraLetterButton.Name = "ExtraLetterButton";
-			this.ExtraLetterButton.Size = new System.Drawing.Size(90, 40);
+			this.ExtraLetterButton.Size = new System.Drawing.Size(94, 30);
 			this.ExtraLetterButton.TabIndex = 8;
 			this.ExtraLetterButton.Text = "Extra Letter";
 			this.ExtraLetterButton.UseVisualStyleBackColor = true;
@@ -111,10 +88,10 @@
 			// StatisticsButton
 			// 
 			this.StatisticsButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.StatisticsButton.Location = new System.Drawing.Point(260, 6);
-			this.StatisticsButton.Margin = new System.Windows.Forms.Padding(1);
+			this.StatisticsButton.Location = new System.Drawing.Point(198, 4);
+			this.StatisticsButton.Margin = new System.Windows.Forms.Padding(2);
 			this.StatisticsButton.Name = "StatisticsButton";
-			this.StatisticsButton.Size = new System.Drawing.Size(90, 40);
+			this.StatisticsButton.Size = new System.Drawing.Size(94, 30);
 			this.StatisticsButton.TabIndex = 7;
 			this.StatisticsButton.Text = "Statistics";
 			this.StatisticsButton.UseVisualStyleBackColor = true;
@@ -123,10 +100,10 @@
 			// WordDefinitionButton
 			// 
 			this.WordDefinitionButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.WordDefinitionButton.Location = new System.Drawing.Point(504, 6);
-			this.WordDefinitionButton.Margin = new System.Windows.Forms.Padding(1);
+			this.WordDefinitionButton.Location = new System.Drawing.Point(394, 4);
+			this.WordDefinitionButton.Margin = new System.Windows.Forms.Padding(2);
 			this.WordDefinitionButton.Name = "WordDefinitionButton";
-			this.WordDefinitionButton.Size = new System.Drawing.Size(90, 40);
+			this.WordDefinitionButton.Size = new System.Drawing.Size(94, 30);
 			this.WordDefinitionButton.TabIndex = 9;
 			this.WordDefinitionButton.Text = "Word Definition";
 			this.WordDefinitionButton.UseVisualStyleBackColor = true;
@@ -134,47 +111,45 @@
 			// 
 			// PlayerPanel
 			// 
-			this.HeaderButtonsTableLayoutPanel.SetColumnSpan(this.PlayerPanel, 5);
-			this.PlayerPanel.Controls.Add(this.CurrentGameLabel);
+			this.PlayerPanel.AutoSize = true;
 			this.PlayerPanel.Controls.Add(this.PlayerComboBox);
 			this.PlayerPanel.Controls.Add(this.label1);
-			this.PlayerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.PlayerPanel.Location = new System.Drawing.Point(0, 52);
-			this.PlayerPanel.Margin = new System.Windows.Forms.Padding(0);
+			this.PlayerPanel.Location = new System.Drawing.Point(494, 4);
+			this.PlayerPanel.Margin = new System.Windows.Forms.Padding(4);
 			this.PlayerPanel.Name = "PlayerPanel";
-			this.PlayerPanel.Size = new System.Drawing.Size(611, 28);
+			this.PlayerPanel.Size = new System.Drawing.Size(263, 30);
 			this.PlayerPanel.TabIndex = 10;
-			// 
-			// CurrentGameLabel
-			// 
-			this.CurrentGameLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.CurrentGameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.CurrentGameLabel.Location = new System.Drawing.Point(285, 0);
-			this.CurrentGameLabel.Name = "CurrentGameLabel";
-			this.CurrentGameLabel.Size = new System.Drawing.Size(314, 28);
-			this.CurrentGameLabel.TabIndex = 2;
-			this.CurrentGameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// PlayerComboBox
 			// 
-			this.PlayerComboBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.PlayerComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.PlayerComboBox.FormattingEnabled = true;
-			this.PlayerComboBox.Location = new System.Drawing.Point(85, 4);
+			this.PlayerComboBox.Location = new System.Drawing.Point(66, 4);
 			this.PlayerComboBox.Name = "PlayerComboBox";
 			this.PlayerComboBox.Size = new System.Drawing.Size(194, 23);
 			this.PlayerComboBox.TabIndex = 1;
 			// 
 			// label1
 			// 
-			this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(79, 28);
+			this.label1.Size = new System.Drawing.Size(60, 28);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Player";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// CurrentGameLabel
+			// 
+			this.CurrentGameLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.CurrentGameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CurrentGameLabel.Location = new System.Drawing.Point(765, 4);
+			this.CurrentGameLabel.Margin = new System.Windows.Forms.Padding(4);
+			this.CurrentGameLabel.Name = "CurrentGameLabel";
+			this.CurrentGameLabel.Size = new System.Drawing.Size(314, 28);
+			this.CurrentGameLabel.TabIndex = 2;
+			this.CurrentGameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.CurrentGameLabel.Visible = false;
 			// 
 			// SecondTimer
 			// 
@@ -182,15 +157,15 @@
 			this.SecondTimer.Interval = 1000;
 			this.SecondTimer.Tick += new System.EventHandler(this.SecondTimer_Tick);
 			// 
-			// CodeCrackerKeyBoard
+			// GridPanel
 			// 
-			this.CodeCrackerKeyBoard.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.CodeCrackerKeyBoard.BackColor = System.Drawing.Color.Transparent;
-			this.CodeCrackerKeyBoard.Location = new System.Drawing.Point(12, 542);
-			this.CodeCrackerKeyBoard.Name = "CodeCrackerKeyBoard";
-			this.CodeCrackerKeyBoard.Size = new System.Drawing.Size(587, 106);
-			this.CodeCrackerKeyBoard.TabIndex = 7;
+			this.GridPanel.Controls.Add(this.CrosswordGrid);
+			this.GridPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.GridPanel.Location = new System.Drawing.Point(0, 38);
+			this.GridPanel.Name = "GridPanel";
+			this.GridPanel.Size = new System.Drawing.Size(1097, 516);
+			this.GridPanel.TabIndex = 9;
+			this.GridPanel.SizeChanged += new System.EventHandler(this.GridPanel_SizeChanged);
 			// 
 			// CrosswordGrid
 			// 
@@ -198,19 +173,45 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.CrosswordGrid.BackColor = System.Drawing.Color.White;
-			this.CrosswordGrid.Location = new System.Drawing.Point(12, 85);
+			this.CrosswordGrid.Location = new System.Drawing.Point(18, 0);
 			this.CrosswordGrid.Name = "CrosswordGrid";
-			this.CrosswordGrid.Size = new System.Drawing.Size(587, 451);
+			this.CrosswordGrid.Size = new System.Drawing.Size(955, 510);
 			this.CrosswordGrid.TabIndex = 0;
+			// 
+			// flowLayoutPanel1
+			// 
+			this.flowLayoutPanel1.AutoSize = true;
+			this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.flowLayoutPanel1.Controls.Add(this.StartNewGameButton);
+			this.flowLayoutPanel1.Controls.Add(this.ExtraLetterButton);
+			this.flowLayoutPanel1.Controls.Add(this.StatisticsButton);
+			this.flowLayoutPanel1.Controls.Add(this.SettingsButton);
+			this.flowLayoutPanel1.Controls.Add(this.WordDefinitionButton);
+			this.flowLayoutPanel1.Controls.Add(this.PlayerPanel);
+			this.flowLayoutPanel1.Controls.Add(this.CurrentGameLabel);
+			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(1097, 38);
+			this.flowLayoutPanel1.TabIndex = 10;
+			// 
+			// CodeCrackerKeyBoard
+			// 
+			this.CodeCrackerKeyBoard.BackColor = System.Drawing.Color.Transparent;
+			this.CodeCrackerKeyBoard.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.CodeCrackerKeyBoard.Location = new System.Drawing.Point(0, 554);
+			this.CodeCrackerKeyBoard.Name = "CodeCrackerKeyBoard";
+			this.CodeCrackerKeyBoard.Size = new System.Drawing.Size(1097, 106);
+			this.CodeCrackerKeyBoard.TabIndex = 7;
 			// 
 			// SiriusCodeCrackerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(611, 660);
-			this.Controls.Add(this.HeaderButtonsTableLayoutPanel);
+			this.ClientSize = new System.Drawing.Size(1097, 660);
+			this.Controls.Add(this.GridPanel);
+			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.CodeCrackerKeyBoard);
-			this.Controls.Add(this.CrosswordGrid);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
 			this.Name = "SiriusCodeCrackerForm";
@@ -222,9 +223,12 @@
 			this.Load += new System.EventHandler(this.SiriusCodeCrackerForm_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SiriusCodeCrackerForm_KeyDown);
 			this.Resize += new System.EventHandler(this.SiriusCodeCrackerForm_Resize);
-			this.HeaderButtonsTableLayoutPanel.ResumeLayout(false);
 			this.PlayerPanel.ResumeLayout(false);
+			this.GridPanel.ResumeLayout(false);
+			this.flowLayoutPanel1.ResumeLayout(false);
+			this.flowLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -234,7 +238,6 @@
 		private System.Windows.Forms.Button StartNewGameButton;
 		private System.Windows.Forms.Button SettingsButton;
 		private KeyBoardUserControl CodeCrackerKeyBoard;
-		private System.Windows.Forms.TableLayoutPanel HeaderButtonsTableLayoutPanel;
 		private System.Windows.Forms.Button StatisticsButton;
 		private System.Windows.Forms.Button ExtraLetterButton;
 		private System.Windows.Forms.Button WordDefinitionButton;
@@ -243,6 +246,8 @@
 		private System.Windows.Forms.ComboBox PlayerComboBox;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Timer SecondTimer;
+		private System.Windows.Forms.Panel GridPanel;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 	}
 }
 

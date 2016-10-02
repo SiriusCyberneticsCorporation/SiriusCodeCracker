@@ -16,6 +16,7 @@ namespace SiriusCodeCracker
 			GivenColour = Properties.Settings.Default.GivenColour;
 			HighlightColour = Properties.Settings.Default.HighlightColour;
 			ErrorColour = Properties.Settings.Default.ErrorColour;
+			m_backgroundBrush = new SolidBrush(Color.FromArgb(200, 210, 230));
 		}
 
 		public int Columns 
@@ -139,6 +140,7 @@ namespace SiriusCodeCracker
 		public Brush GivenBrush { get { return m_givenBrush; } }
 		public Brush HighlightBrush { get { return m_highlightBrush; } }
 		public Brush ErrorBrush { get { return m_errorBrush; } }
+		public Brush BackgroundBrush { get { return m_backgroundBrush; } }
 
 
 		private Brush m_letterBrush = Brushes.Black;
@@ -149,5 +151,6 @@ namespace SiriusCodeCracker
 		private Brush m_givenBrush = Brushes.Blue;
 		private Brush m_highlightBrush = Brushes.CornflowerBlue;
 		private Brush m_errorBrush = Brushes.Pink;
+		private Brush m_backgroundBrush = Brushes.Gainsboro;
 	}
 }

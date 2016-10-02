@@ -98,11 +98,12 @@ namespace SiriusCodeCracker
 						}
 					}
 
-
+					
 					for (int column = 0; column < CrackerData.Configuration.Columns; column++)
 					{
 						for (int row = 0; row < CrackerData.Configuration.Rows; row++)
 						{
+							bool highlighted = false;
 							RectangleF cell = new RectangleF(columnWidth * column, rowHeight * row, columnWidth, rowHeight);
 
 							if (CrackerData.SelectedCharacter != null)
@@ -110,6 +111,7 @@ namespace SiriusCodeCracker
 								if (CrackerData.CharacterGrid[column, row].CorrectLetter == CrackerData.SelectedCharacter.CorrectLetter)
 								{
 									e.Graphics.FillRectangle(CrackerData.Configuration.HighlightBrush, cell);
+									highlighted = true;
 								}
 							}
 
@@ -131,6 +133,10 @@ namespace SiriusCodeCracker
 									CrackerData.CharacterGrid[column, row].SelectedLetter != CrackerData.CharacterGrid[column, row].CorrectLetter)
 								{
 									e.Graphics.FillRectangle(CrackerData.Configuration.ErrorBrush, cell);
+								}
+								else if(!highlighted  && CrackerData.CharacterGrid[column, row].GameState == Enumerations.CellGameState.Number)
+								{
+									e.Graphics.FillRectangle(CrackerData.Configuration.BackgroundBrush, cell);
 								}
 
 								if (CrackerData.CharacterGrid[column, row].GameState == Enumerations.CellGameState.Number)

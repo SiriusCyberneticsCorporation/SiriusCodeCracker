@@ -79,5 +79,10 @@ namespace SiriusCodeCracker
 				DefinitionRichTextBox.Text = FindDefinition(SelectedWordTextBox.Text.ToUpper());
 			}
 		}
+
+		private void TheCancelButton_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
 	}
 }

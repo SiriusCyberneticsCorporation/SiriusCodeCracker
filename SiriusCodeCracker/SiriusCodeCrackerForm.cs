@@ -52,6 +52,7 @@ namespace SiriusCodeCracker
 				PlayerComboBox.Enabled = true;
 				StatisticsButton.Text = "Statistics";
 				SettingsButton.Text = "Change Settings";
+				Text = "Sirius Code Cracker";
 			}
 			else
 			{
@@ -183,12 +184,20 @@ namespace SiriusCodeCracker
 			if (CrackerData.GameIsActive())
 			{
 				CrackerData.GameDurationSeconds++;
+				Text = "Sirius Code Cracker - " + string.Format("Duration : {0}:{1}:{2} Corrections: {3} Given Letters: {4}",
+														(CrackerData.GameDurationSeconds / 3600).ToString("00"),
+														((CrackerData.GameDurationSeconds % 3600) / 60).ToString("00"),
+														(CrackerData.GameDurationSeconds % 60).ToString("00"),
+														CrackerData.Corrections,
+														CrackerData.GivenLetters);
+				/*
 				CurrentGameLabel.Text = string.Format("Duration : {0}:{1}:{2} Corrections: {3} Given Letters: {4}",
 														(CrackerData.GameDurationSeconds / 3600).ToString("00"),
 														((CrackerData.GameDurationSeconds % 3600) / 60).ToString("00"),
 														(CrackerData.GameDurationSeconds % 60).ToString("00"),
 														CrackerData.Corrections,
 														CrackerData.GivenLetters);
+				*/
 			}
 		}
 
@@ -247,6 +256,24 @@ namespace SiriusCodeCracker
 			// persist location ,size and window state of the form on the desktop
 			Properties.Settings.Default.Save();
 
+		}
+
+		private void GridPanel_SizeChanged(object sender, EventArgs e)
+		{
+			if (GridPanel.Height > GridPanel.Width)
+			{
+				CrosswordGrid.Top = GridPanel.Height / 2 - GridPanel.Width / 2;
+				CrosswordGrid.Left = 0;
+				CrosswordGrid.Height = GridPanel.Width;
+				CrosswordGrid.Width = GridPanel.Width;
+			}
+			else
+			{
+				CrosswordGrid.Top = 0;
+				CrosswordGrid.Left = GridPanel.Width / 2 - GridPanel.Height/2;
+				CrosswordGrid.Height = GridPanel.Height;
+				CrosswordGrid.Width = GridPanel.Height;
+			}
 		}
 
 		

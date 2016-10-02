@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:minWidth="25px"
+    p1:minHeight="25px"
+    p1:layout_width="fill_parent"
+    p1:layout_height="fill_parent"
+    p1:id="@+id/relativeLayout1">
+    <TableRow
+        p1:minWidth="25px"
+        p1:minHeight="25px"
+        p1:layout_width="match_parent"
+        p1:layout_height="wrap_content"
+        p1:id="@+id/tableRow1">
+        <Button
+            p1:text="Button"
+            p1:id="@+id/button1"
+            p1:layout_width="wrap_content"
+            p1:layout_weight="0.33" />
+        <Button
+            p1:text="Button"
+            p1:layout_column="1"
+            p1:id="@+id/button2"
+            p1:layout_width="wrap_content"
+            p1:layout_weight="0.33" />
+        <Button
+            p1:text="Button"
+            p1:layout_column="2"
+            p1:id="@+id/button3"
+            p1:layout_weight="0.33"
+            p1:layout_width="wrap_content" />
+    </TableRow>
+    <GridDisplayView
+        p1:layout_width="match_parent"
+        p1:layout_height="match_parent"
+        p1:layout_below="@id/tableRow1"
+        p1:id="@+id/GridDisplay"
+        p1:layout_marginBottom="0.0dp" />
+</RelativeLayout>

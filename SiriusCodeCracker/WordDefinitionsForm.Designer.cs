@@ -33,6 +33,7 @@
 			this.SelectedWordTextBox = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.LookUpWordButton = new System.Windows.Forms.Button();
+			this.TheCancelButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// DictionaryWordsListBox
@@ -96,6 +97,17 @@
 			this.LookUpWordButton.UseVisualStyleBackColor = true;
 			this.LookUpWordButton.Click += new System.EventHandler(this.LookUpWordButton_Click);
 			// 
+			// TheCancelButton
+			// 
+			this.TheCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.TheCancelButton.Location = new System.Drawing.Point(326, 229);
+			this.TheCancelButton.Name = "TheCancelButton";
+			this.TheCancelButton.Size = new System.Drawing.Size(75, 23);
+			this.TheCancelButton.TabIndex = 10;
+			this.TheCancelButton.Text = "Cancel";
+			this.TheCancelButton.UseVisualStyleBackColor = true;
+			this.TheCancelButton.Click += new System.EventHandler(this.TheCancelButton_Click);
+			// 
 			// WordDefinitionsForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -106,6 +118,7 @@
 			this.Controls.Add(this.DefinitionRichTextBox);
 			this.Controls.Add(this.SelectedWordTextBox);
 			this.Controls.Add(this.label1);
+			this.Controls.Add(this.TheCancelButton);
 			this.MaximizeBox = false;
 			this.Name = "WordDefinitionsForm";
 			this.ShowIcon = false;
@@ -125,5 +138,6 @@
 		private System.Windows.Forms.TextBox SelectedWordTextBox;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button LookUpWordButton;
+		private System.Windows.Forms.Button TheCancelButton;
 	}
 }

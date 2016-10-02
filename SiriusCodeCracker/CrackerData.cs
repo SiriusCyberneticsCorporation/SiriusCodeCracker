@@ -237,6 +237,12 @@ namespace SiriusCodeCracker
 		{
 			if (m_selectedCharacter != null)
 			{
+				// If the letter is already used then un-assign it first.
+				if (m_keyboardLetterLookup.ContainsKey(letter) && m_keyboardLetterLookup[letter].Used)
+				{
+					UnassignLetter(letter);
+				}
+
 				for (int column = 0; column < m_configuration.Columns; column++)
 				{
 					for (int row = 0; row < m_configuration.Rows; row++)

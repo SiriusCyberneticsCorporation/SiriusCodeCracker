@@ -37,11 +37,17 @@ namespace SiriusCodeCracker
 			m_wordsByLength.Clear();
 			Array.Clear(m_characterPositions, 0, m_characterPositions.Length);
 
-			if (System.IO.File.Exists("WordsWithDifficulty.txt"))
+			// The WordsWithDifficulty file is an embedded resource.
+			System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+			System.IO.Stream embeddedStream = assembly.GetManifestResourceStream("SiriusCodeCracker.WordsWithDifficulty.txt");
+
+			//if (System.IO.File.Exists("WordsWithDifficulty.txt"))
+			if(embeddedStream != null)
 			{
 				string line;
 
-				System.IO.StreamReader file = new System.IO.StreamReader("WordsWithDifficulty.txt");
+				//System.IO.StreamReader file = new System.IO.StreamReader("WordsWithDifficulty.txt");
+				System.IO.StreamReader file = new System.IO.StreamReader(embeddedStream);
 				while ((line = file.ReadLine()) != null)
 				{
 					int difficulty = -1;
@@ -72,19 +78,24 @@ namespace SiriusCodeCracker
 			int length = word.Length;
 			GeneratorWord wordToAdd = new GeneratorWord(word);
 
+			// If this word is shorter than all previous words the update the m_shortestWord variable.
 			if (length < m_shortestWord)
 			{
 				m_shortestWord = length;
 			}
+			// If this word is longer than all previous words the update the m_longestWord variable.
 			if (length > m_longestWord)
 			{
 				m_longestWord = length;
 			}
 
+			// If the m_wordsByLength variable already contains an entry for words of this length
+			// then simply add the new word to that lengths list.
 			if (m_wordsByLength.ContainsKey(length))
 			{
 				m_wordsByLength[length].Add(wordToAdd);
 			}
+			// Otherwise create a new list, add the first word and add the list to the dictionary.
 			else
 			{
 				List<GeneratorWord> newList = new List<GeneratorWord>();
@@ -92,6 +103,13 @@ namespace SiriusCodeCracker
 				m_wordsByLength.Add(length, newList);
 			}
 
+			// Now we create an array for every letter and position of that letter for every word.
+			// For example :- the word "DOG" will add
+			// -- position 0, letter number 3, 3 letter words, DOG;
+			// -- position 1, letter number 14, 3 letter words, DOG;
+			// -- position 2, letter number 6, 3 letter words, DOG;
+			// NOTE: This is quite a memory hungry process but it makes the lookup of words with
+			// matching letters much faster.
 			for (int letterPosition = 0; letterPosition < length; letterPosition++)
 			{
 				int letterNumber = word[letterPosition] - 65;
@@ -129,11 +147,12 @@ namespace SiriusCodeCracker
 				horizontal = true;
 				for (startRow = 0; startRow < CrackerData.Configuration.Rows; startRow++)
 				{
-					for (startColumn = 0; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
+					//for (startColumn = 0; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
+					for (startColumn = CrackerData.NextRandom(0, 3) / 2; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
 					{
 						if (iteration == 0)
 						{
-							startColumn += CrackerData.NextRandom(0, 3) / 2;
+							//startColumn += CrackerData.NextRandom(0, 3) / 2;
 						}
 
 						preferredLength = GetPreferredLength(iteration);
@@ -150,20 +169,31 @@ namespace SiriusCodeCracker
 
 					horizontal = !horizontal;
 
-					for (startColumn = 0; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
+					//for (startColumn = 0; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
+					for (startColumn = CrackerData.NextRandom(0, 3) / 2; startColumn < CrackerData.Configuration.Columns - m_shortestWord; )
 					{
 						if (iteration == 0)
 						{
-							startColumn += CrackerData.NextRandom(0, 3) / 2;
+							//startColumn += CrackerData.NextRandom(0, 3) / 2;
 						}
 
 						preferredLength = GetPreferredLength(iteration);
 
 						charactersPlaced = PlaceWord(startRow, startColumn, horizontal, preferredLength);
 
+						/*
 						if (iteration == 0)
 						{
 							startColumn += CrackerData.NextRandom(2, 10);
+						}
+						else
+						{
+							startColumn++;
+						}
+						*/
+						if (charactersPlaced > 0)
+						{
+							startColumn += 2;
 						}
 						else
 						{
@@ -199,9 +229,19 @@ namespace SiriusCodeCracker
 
 						charactersPlaced = PlaceWord(startRow, startColumn, horizontal, preferredLength);
 
+						/*
 						if (iteration == 0)
 						{
 							startRow += CrackerData.NextRandom(2, 10);
+						}
+						else
+						{
+							startRow++;
+						}
+						*/
+						if (charactersPlaced > 0)
+						{
+							startRow += 2;
 						}
 						else
 						{
@@ -327,8 +367,11 @@ namespace SiriusCodeCracker
 					return 0;
 				}
 
-				for (int column = startColumn; column < CrackerData.Configuration.Columns; column++)
+				// By now we should have weeded out all of the obvious clashes so now we need to find out
+				// how many words cross the path that we want to fill.
+				for (int column = startColumn; column < startColumn + maximumWordLength; column++)
 				{
+					// If the column contains a letter then add the character position and letter number to a list.
 					if (CrackerData.CharacterGrid[column, startRow].IsLetter())
 					{
 						int letterNumber = CrackerData.CharacterGrid[column, startRow].LetterNumber();
@@ -426,8 +469,11 @@ namespace SiriusCodeCracker
 					return 0;
 				}
 
-				for (int row = startRow; row < CrackerData.Configuration.Rows; row++)
+				// By now we should have weeded out all of the obvious clashes so now we need to find out
+				// how many words cross the path that we want to fill.
+				for (int row = startRow; row < startRow + maximumWordLength; row++)
 				{
+					// If the row contains a letter then add the character position and letter number to a list.
 					if (CrackerData.CharacterGrid[startColumn, row].IsLetter())
 					{
 						int letterNumber = CrackerData.CharacterGrid[startColumn, row].LetterNumber();
@@ -446,9 +492,11 @@ namespace SiriusCodeCracker
 				maximumWordLength = preferredLength;
 			}
 
+			// If the existingLetters list contains entries then the place that we want to put a new word
+			// has words that run across its path.
 			if (existingLetters.Count > 0)
 			{
-				// Find a word that fits
+				// Create a temporary list of the character position lists where there are existing letters.
 				List<Dictionary<int, List<GeneratorWord>>> listOfLists = new List<Dictionary<int, List<GeneratorWord>>>();
 
 				foreach (KeyValuePair<int, int> pair in existingLetters)

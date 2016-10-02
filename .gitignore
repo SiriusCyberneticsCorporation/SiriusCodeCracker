@@ -1,29 +1,37 @@
-Thumbs.db
+# use glob syntax
+syntax: glob
+
 *.obj
-*.exe
 *.pdb
 *.user
 *.aps
 *.pch
 *.vspscc
+*.vssscc
 *_i.c
 *_p.c
 *.ncb
 *.suo
-*.sln.docstates
 *.tlb
 *.tlh
 *.bak
 *.cache
 *.ilk
 *.log
-[Bb]in
-[Dd]ebug*/
 *.lib
 *.sbr
+*.scc
+[Bb]in
+[Dd]ebug*/
 obj/
 [Rr]elease*/
 _ReSharper*/
+[Tt]humbs.db
 [Tt]est[Rr]esult*
-*.vssscc
-$tf*/
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+*.resharper
+publish
+
+# mstest test results
+TestResults
